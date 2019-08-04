@@ -1,0 +1,13 @@
+{
+  "libs": [
+    "lodash",
+    "browser",
+    "ecmascript",
+    "jquery",
+    "underscore",
+    "chai"
+  ],
+  "plugins": {
+    "node": {}
+  }
+}

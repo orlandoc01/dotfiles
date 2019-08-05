@@ -51,11 +51,6 @@ function! BuildYCM(info)
     !./install.py --clang-completer
   endif
 endfunction
-function! BuildTern(info)
-  if a:info.status == 'installed' || a:info.force
-    !npm install
-  endif
-endfunction
 function! InstallPynVim(info)
   if a:info.status == 'installed' || a:info.force
     !pip3 install pynvim
@@ -71,8 +66,6 @@ Plug 'w0rp/ale'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
-Plug 'easymotion/vim-easymotion'
-Plug 'mileszs/ack.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'majutsushi/tagbar'
 Plug 'sheerun/vim-polyglot'
@@ -95,7 +88,6 @@ Plug 'lifepillar/vim-gruvbox8'
 Plug 'Shougo/deoplete.nvim'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc', { 'do': function('InstallPynVim') }
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for': 'javascript' }
 Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
 let g:python3_host_prog = "/usr/local/bin/python3"
 let g:deoplete#enable_at_startup = 1
@@ -106,11 +98,8 @@ Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM'), 'for': ['c', 'cpp']
 
 "Language Plugins
 Plug 'vim-scripts/a.vim', { 'for': ['c', 'cpp'] }
-Plug 'marijnh/tern_for_vim', { 'do': function('BuildTern'), 'for': 'javascript' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'mattn/emmet-vim', { 'for': 'html' }
-Plug 'purescript-contrib/purescript-vim', { 'for': 'purescript' }
-Plug 'frigoeu/psc-ide-vim', { 'for': 'purescript'}
 Plug 'flowtype/vim-flow', { 'for': 'javascript' }
 Plug 'keith/swift.vim', { 'for': 'swift' }
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
@@ -139,7 +128,6 @@ command! Ts execute 'tselect' expand('<cword>')
 nmap , <Plug>(ale_detail)
 nmap <silent> <leader>aj :ALENext<cr>
 nmap <silent> <leader>ak :ALEPrevious<cr>EasyMotion
-nmap F <Plug>(easymotion-overwin-w)
 "NerdTrees
 nmap > :NERDTreeFocus<CR>
 nmap < :NERDTreeClose<CR>
@@ -228,8 +216,6 @@ let g:javascript_plugin_flow = 1
 let g:javascript_plugin_jsdoc = 1
 let g:flow#enable = 0
 let g:flow#omnifunc = 0
-let g:tern_show_argument_hints = 'on_hold'
-let g:tern_map_keys = 1
 
 "Use locally installed flow
 let local_flow = finddir('node_modules', '.;') . '/.bin/flow'

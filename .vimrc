@@ -37,6 +37,8 @@ set foldlevel=2
 set encoding=utf-8
 set exrc
 set secure
+set timeoutlen=1000 ttimeoutlen=100
+let mapleader = "\<Space>" 
 
 "========== Install Vim-plug if not found ==============''
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -83,12 +85,12 @@ Plug 'morhetz/gruvbox'
 Plug 'airblade/vim-rooter'
 Plug 'tfnico/vim-gradle'
 Plug 'lifepillar/vim-gruvbox8'
+Plug 'aserebryakov/vim-todo-lists'
 
 "Deoplete Completion
 Plug 'Shougo/deoplete.nvim'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc', { 'do': function('InstallPynVim') }
-Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
 let g:python3_host_prog = "/usr/local/bin/python3"
 let g:deoplete#enable_at_startup = 1
 set runtimepath+=$HOME/.vim/plugged/deoplete.nvim
@@ -123,20 +125,26 @@ endif
 
 "==================== Key Mappings =========================
 command! Ts execute 'tselect' expand('<cword>')
+command! Todo execute 'e ~/.items.todo'
 
 "ALE DETAIL
 nmap , <Plug>(ale_detail)
 nmap <silent> <leader>aj :ALENext<cr>
-nmap <silent> <leader>ak :ALEPrevious<cr>EasyMotion
+nmap <silent> <leader>ak :ALEPrevious<cr>
 "NerdTrees
 nmap > :NERDTreeFocus<CR>
 nmap < :NERDTreeClose<CR>
+let NERDTreeShowHidden=1
 "TagBar
 nmap <F7> :TagbarToggle<CR>
 " Opens a new tab with the current buffer's path
 nmap :tn :tabnew<CR>
 " use visual-block instead of visual as default, vv will enter visual mode
 nnoremap v <C-v>
+
+let g:VimTodoListsDatesEnabled = 1
+let g:VimTodoListsDatesFormat = "%a %b, %Y"
+
 
 "================= Vimux================================="
 " run rspec
@@ -174,7 +182,7 @@ let g:ycm_seed_identifiers_with_syntax = 1
 call deoplete#custom#option({
 \ 'auto_complete_delay': 200,
 \ 'ignore_case': v:true,
-\ 'min_pattern_length': 2
+\ 'min_pattern_length': 4
 \ })
 
 "============ Ctrl-P Settings =======================
@@ -268,7 +276,6 @@ augroup personal_autocmd
 augroup end
 
 "======= Java
-let mapleader = "\<Space>" 
 nmap <Leader>jl :call JDBBreak()<CR>
 nmap <Leader>jr :call VimuxRunCommand('run;')<CR>
 nmap <Leader>jdb :call StartJDB()<CR>

@@ -1,0 +1,132 @@
+# add an on_enter command to the default mode
+# :: default : chunkc border::color 0xff775759
+#
+# defines a new mode 'test' with an on_enter command, that captures keypresses
+# :: test @ : chunkc border::color 0xff24ccaa
+#
+# from 'default' mode, activate mode 'test'
+# cmd - x ; test
+#
+# from 'test' mode, activate mode 'default'
+# test < cmd - x ; default
+#
+# launch a new terminal instance when in either 'default' or 'test' mode
+# default, test < cmd - return : open -na /Applications/Terminal.app
+
+# application specific bindings
+#
+# cmd - n [
+#     "kitty"       : echo "hello kitty"
+#     *             : echo "hello everyone"
+#     "qutebrowser" : echo "hello qutebrowser"
+#     "terminal"    ~
+#     "finder"      : false
+# ]
+
+# specify a file that should be included as an additional config-file.
+# treated as an absolutepath if the filename begins with '/' otherwise
+# the file is relative to the path of the config-file it was loaded from.
+#
+# .load "/Users/Koe/.config/partial_skhdrc"
+# .load "partial_skhdrc"
+
+# prevent skhd from monitoring events for specific applications.
+#
+# .blacklist [
+#    "kitty"
+#    "terminal"
+#    "qutebrowser"
+# ]
+
+# set border color for different modes
+:: default    : yabai -m config window_border off
+:: switcher @ : yabai -m config window_border on;\
+                yabai -m config active_window_border_color 0xddbdd322
+:: swap @     : yabai -m config active_window_border_color 0xdd458588 
+:: tree @     : yabai -m config active_window_border_color 0xddfabd2f
+:: spacer @   : yabai -m config active_window_border_color 0xddb16286
+
+# toggle between modes
+default, swap, spacer, tree < ctrl - f ; switcher
+
+switcher < ctrl - f ; default
+switcher < s ; swap
+switcher < t ; tree
+switcher < space ; spacer
+
+# switcher mode
+
+switcher < return ; default
+
+switcher < r :   skhd -r # reload config
+switcher < h :   yabai -m window --focus west
+switcher < l :   yabai -m window --focus east
+switcher < j :   yabai -m window --focus south
+switcher < k :   yabai -m window --focus north
+switcher < z :   yabai -m window --toggle zoom-fullscreen
+
+switcher < b :   yabai -m space --layout bsp
+switcher < f :   yabai -m space --layout float
+
+# Switcher System Control Modifications
+ switcher < lctrl - up     -> : echo "Mission Control UP"
+ switcher < lctrl - down   -> : echo "Mission Control DOWN"
+ switcher < lctrl - left   -> : echo "Mission Control LEFT"
+ switcher < lctrl - right  -> : echo "Mission Control RIGHT"
+ switcher < lctrl - right  -> : echo "Mission Control RIGHT"
+ switcher < cmd - m        -> : echo "Minimize Window";
+ switcher < cmd - w        -> : echo "Close Window";
+ 
+
+# swap mode
+swap < return ; default
+swap < h :   yabai -m window --swap west
+swap < j :   yabai -m window --swap south
+swap < k :   yabai -m window --swap north
+swap < l :   yabai -m window --swap east
+swap < m :   yabai -m window --swap mark
+
+swap < shift - k :   yabai -m window --warp north
+swap < shift - l :   yabai -m window --warp east
+swap < shift - j :   yabai -m window --warp south
+swap < shift - h :   yabai -m window --warp west
+
+# tree mode
+tree < return     ;   default
+tree < r          :   yabai -m space --rotate 90
+tree < o          :   yabai -m window --swap prev
+tree < shift - o  :   yabai -m window --swap next
+
+# spacer mode
+spacer < return           ; default
+
+# spacer - e               :   chunkc tiling::desktop --equalize
+
+# spacer - up              :   chunkc tiling::desktop -p inc
+# spacer - down            :   chunkc tiling::desktop -p dec
+#
+# spacer + shift - up      :   chunkc tiling::desktop -g inc
+# spacer + shift - down    :   chunkc tiling::desktop -g dec
+ 
+# vi-mode for non-terminal applications
+# remap left-control h/j/k/l -> arrow keys
+ctrl - h [
+ "Terminal"  ~
+ "Alacritty" ~
+ *           : skhd -k "left"
+]
+ctrl - j [
+ "Terminal"  ~
+ "Alacritty" ~
+ *           : skhd -k "down"
+]
+ctrl - k [
+ "Terminal"  ~
+ "Alacritty" ~
+ *           : skhd -k "up"
+]
+ctrl - l [
+ "Terminal"  ~
+ "Alacritty" ~
+ *           : skhd -k "right"
+]

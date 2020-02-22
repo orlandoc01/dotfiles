@@ -79,6 +79,7 @@ brew "cjbassi/gotop/gotop"
 brew "golangci/tap/golangci-lint"
 brew "koekeishiya/formulae/skhd"
 brew "koekeishiya/formulae/yabai"
+cask "1password"
 cask "airtable"
 cask "alacritty"
 cask "alfred"
@@ -114,3 +115,4 @@ mas "Irvue", id: 1039633667
 mas "Keynote", id: 409183694
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
+mas "Xcode", id: 497799835

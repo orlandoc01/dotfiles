@@ -38,6 +38,7 @@ set encoding=utf-8
 set exrc
 set secure
 set timeoutlen=1000 ttimeoutlen=100
+set re=1
 let mapleader = "\<Space>" 
 
 "========== Install Vim-plug if not found ==============''

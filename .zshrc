@@ -2,7 +2,7 @@
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
-export PATH="/Users/orlandocastillo/Library/Python/2.7/bin:$PATH"
+export PATH="/Users/orlando/Library/Python/2.7/bin:$PATH"
 export PATH="/usr/local/opt/bison/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 export PATH="$HOME/.jenv/bin:$PATH"
@@ -54,4 +54,9 @@ plugins=(git docker)
 # Start TMUX
 [[ -z $TMUX ]] && (tmux attach || tmux new)
 alias ranger='ranger --choosedir=$HOME/.rangerdir; LASTDIR=`cat $HOME/.rangerdir`; cd "$LASTDIR"'
+
 export GOSUMDB=off
+export GOPATH="${HOME}/.go"
+export GOROOT="/usr/local/opt/go/libexec"
+export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
+export PATH="/Users/orlando/.local/bin:$PATH"

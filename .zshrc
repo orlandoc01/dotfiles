@@ -1,8 +1,9 @@
 # ENV variables
+USER=$(whoami)
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
-export PATH="/Users/orlando/Library/Python/2.7/bin:$PATH"
+export PATH="/Users/$USER/Library/Python/2.7/bin:$PATH"
 export PATH="/usr/local/opt/bison/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 export PATH="$HOME/.jenv/bin:$PATH"
@@ -16,7 +17,7 @@ export EDITOR='vim'
 export GRADLE_USER_HOME="$HOME/.gradle"
 #export GRADLE_HOME=/usr/local/Cellar/gradle/5.3
 export PATH="/usr/local/opt/llvm/bin:$PATH"
-export PATH="/Users/orlando/Library/Android/sdk/platform-tools:$PATH"
+export PATH="/Users/$USER/Library/Android/sdk/platform-tools:$PATH"
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 export PATH="$(npm config get prefix)/bin:$PATH"
 export MANPATH="/usr/local/man:$MANPATH"
@@ -43,7 +44,7 @@ ZSH_THEME=""
 # CASE_SENSITIVE="true"
 # ENABLE_CORRECTION="true"
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
-export ZSH=/Users/$(whoami)/.oh-my-zsh
+export ZSH="/Users/$USER/.oh-my-zsh"
 fpath=( "$HOME/.zfunctions" $fpath )
 source $ZSH/oh-my-zsh.sh
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -59,4 +60,4 @@ export GOSUMDB=off
 export GOPATH="${HOME}/.go"
 export GOROOT="/usr/local/opt/go/libexec"
 export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
-export PATH="/Users/orlando/.local/bin:$PATH"
+export PATH="/Users/$USER/.local/bin:$PATH"

@@ -38,7 +38,6 @@ set encoding=utf-8
 set exrc
 set secure
 set timeoutlen=1000 ttimeoutlen=100
-set re=1
 let mapleader = "\<Space>" 
 
 "========== Install Vim-plug if not found ==============''
@@ -138,6 +137,8 @@ nmap <Leader>vz :call VimuxZoomRunner()<CR>
 "============= File Settings =====================
 au BufNewFile,BufRead *.ejs set filetype=html
 au BufNewFile,BufRead CMake* set filetype=cmake
+" Ruby syntax highlighting works better with old regexp engine
+au BufNewFile,BufRead *.rb set re=1
 
 "============ Autocompletion ===================
 call deoplete#custom#option('sources', { '_': ['ale', 'around'] })

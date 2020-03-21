@@ -27,7 +27,7 @@ set textwidth=0
 set wrapmargin=0
 set formatoptions+=1
 set backspace=indent,eol,start
-set completeopt-=preview
+set completeopt=menu,menuone,preview,noselect,noinsert
 set wildmode=list:longest,full
 set wildmenu             
 set foldmethod=indent   
@@ -64,10 +64,11 @@ Plug 'w0rp/ale'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-endwise'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'majutsushi/tagbar'
 Plug 'sheerun/vim-polyglot'
-Plug 'tpope/vim-fugitive'
 Plug 'godlygeek/tabular'
 Plug 'Yggdroot/indentLine'
 Plug 'tyru/open-browser.vim'
@@ -139,11 +140,11 @@ au BufNewFile,BufRead *.ejs set filetype=html
 au BufNewFile,BufRead CMake* set filetype=cmake
 
 "============ Autocompletion ===================
-" call deoplete#custom#option('sources', { '_': ['ale', 'around'] })
+call deoplete#custom#option('sources', { '_': ['ale', 'around'] })
 call deoplete#custom#option('auto_complete_delay', 200)
 call deoplete#custom#option('ignore_case', v:true)
-call deoplete#custom#option('min_pattern_length', 4)
-call deoplete#custom#source('_', 'min_pattern_length', 4)
+call deoplete#custom#option('min_pattern_length', 3)
+call deoplete#custom#source('_', 'min_pattern_length', 3)
 
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -173,11 +174,14 @@ set omnifunc=ale#completion#OmniFunc
 nmap , <Plug>(ale_detail)
 nmap <silent> <leader>aj :ALENext<cr>
 nmap <silent> <leader>ak :ALEPrevious<cr>
+nmap <silent> <leader>a] :ALEGoToDefinition<cr>
+nmap <silent> <leader>a, :ALEHover<cr>
 
 let g:ale_statusline_format = ['X %d', '? %d', '']
 let g:ale_echo_msg_format = '%linter% says %s'
 highlight clear ALEErrorSign " otherwise uses error bg color (typically red)
 highlight clear ALEWarningSign " otherwise uses error bg color (typically red)
+let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 1
 let g:ale_javascript_eslint_use_global = 1
@@ -189,8 +193,10 @@ let g:ale_cpp_gcc_options = '-std=c++11 -Wall -I ./build/lib/installed/include'
 let g:ale_sign_warning = '?' " could use emoji
 let g:ale_sign_error = 'X' " could use emoji
 let g:ale_completion_enabled = 0
+let g:rooter_patterns = ['Gemfile', '.git/']
 let g:ale_linters = {
-\   'go': ['gobuild', 'golangci-lint', 'golint', 'gotype', 'gopls'],
+\   'ruby': ['ruby', 'rubocop', 'solargraph', 'sorbet'],
+\   'go': ['gobuild', 'golint', 'gotype', 'gopls'],
 \   'javascript': ['eslint', 'tsserver', 'flow-language-server'],
 \   'haskell': ['ghc', 'cabal-ghc', 'stack-ghc', 'hie', 'hlint', 'stack-build']
 \}

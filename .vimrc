@@ -79,6 +79,10 @@ Plug 'lifepillar/vim-gruvbox8'
 Plug 'aserebryakov/vim-todo-lists'
 
 "Deoplete Completion
+" If error is thrown regarding pynvim, run
+"    :pythonx import sys; print(sys.path)
+" to detect the python version compiled with vim and then run
+"    PATH="/usr/local/opt/python@VERSION/bin:$PATH" pip3 install pynvim
 Plug 'Shougo/deoplete.nvim'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc', { 'do': function('InstallPynVim') }
@@ -129,6 +133,10 @@ let g:VimTodoListsDatesFormat = "%a %b, %Y"
 nmap <Leader>rb :call VimuxRunCommand("clear; ~/.rbenv/shims/bundle exec rspec " . bufname("%"))<CR>
 " run rspec line
 nmap <Leader>rbl :call VimuxRunCommand("clear; ~/.rbenv/shims/bundle exec rspec " . bufname("%") . ":" . line("."))<CR>
+" run go test
+nmap <Leader>gt :call VimuxRunCommand("clear; go test " . expand("%:p:h"))<CR>
+" run go test on func
+nmap <Leader>gtf :call VimuxRunCommand("clear; go test " . expand("%:p:h") . " -run " . expand("<cword>"))<CR>
 nmap <Leader>vq :VimuxCloseRunner<CR>
 nmap <Leader>vl :VimuxRunLastCommand<CR>
 nmap <Leader>vx :VimuxInterruptRunner<CR>
@@ -137,6 +145,7 @@ nmap <Leader>vz :call VimuxZoomRunner()<CR>
 "============= File Settings =====================
 au BufNewFile,BufRead *.ejs set filetype=html
 au BufNewFile,BufRead CMake* set filetype=cmake
+au BufNewFile,BufRead *.go setlocal ts=4 sts=4 sw=4 noexpandtab
 " Ruby syntax highlighting works better with old regexp engine
 au BufNewFile,BufRead *.rb set re=1
 
@@ -194,13 +203,18 @@ let g:ale_cpp_gcc_options = '-std=c++11 -Wall -I ./build/lib/installed/include'
 let g:ale_sign_warning = '?' " could use emoji
 let g:ale_sign_error = 'X' " could use emoji
 let g:ale_completion_enabled = 0
-let g:rooter_patterns = ['Gemfile', '.git/']
+let g:rooter_patterns = ['README', 'README.md', 'Makefile', 'Gemfile', '.git/']
 let g:ale_linters = {
 \   'ruby': ['ruby', 'rubocop', 'solargraph', 'sorbet'],
 \   'go': ['gobuild', 'golint', 'gotype', 'gopls'],
 \   'javascript': ['eslint', 'tsserver', 'flow-language-server'],
 \   'haskell': ['ghc', 'cabal-ghc', 'stack-ghc', 'hie', 'hlint', 'stack-build']
 \}
+let g:ale_fixers = {
+\   'go': ['goimports']
+\ }
+let g:ale_fix_on_save = 1
+
 " Note: for above haskell settings, install IDE engine separately: 
 " https://gist.github.com/orlandoc01/58f2cd702b3c81c661c915c62dcbde18
 

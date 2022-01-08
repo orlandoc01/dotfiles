@@ -142,8 +142,8 @@ au BufNewFile,BufRead CMake* set filetype=cmake
 " call deoplete#custom#option('sources', { '_': ['ale', 'around'] })
 call deoplete#custom#option('auto_complete_delay', 200)
 call deoplete#custom#option('ignore_case', v:true)
-call deoplete#custom#option('min_pattern_length', 4)
-call deoplete#custom#source('_', 'min_pattern_length', 4)
+call deoplete#custom#option('min_pattern_length', 3)
+call deoplete#custom#source('_', 'min_pattern_length', 3)
 
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"

@@ -91,6 +91,8 @@ let g:deoplete#enable_at_startup = 1
 set runtimepath+=$HOME/.vim/plugged/deoplete.nvim
 
 "Language Plugins
+Plug 'natebosch/vim-lsc'
+Plug 'hrsh7th/deoplete-vim-lsc'
 Plug 'vim-scripts/a.vim', { 'for': ['c', 'cpp'] }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'mattn/emmet-vim', { 'for': 'html' }
@@ -150,11 +152,33 @@ au BufNewFile,BufRead *.go setlocal ts=4 sts=4 sw=4 noexpandtab
 au BufNewFile,BufRead *.rb set re=1
 
 "============ Autocompletion ===================
-call deoplete#custom#option('sources', { '_': ['ale', 'around'] })
+call deoplete#custom#option('sources', { '_': ['lsc', 'around'] })
 call deoplete#custom#option('auto_complete_delay', 200)
 call deoplete#custom#option('ignore_case', v:true)
 call deoplete#custom#option('min_pattern_length', 3)
 call deoplete#custom#source('_', 'min_pattern_length', 3)
+
+let g:ale_disable_lsp = 1
+let g:lsc_enable_autocomplete = v:false
+let g:lsc_auto_map = {
+ \  'GoToDefinition': 'gd',
+ \  'FindReferences': 'gr',
+ \  'SignatureHelp': 'gm',
+ \  'Rename': 'gR',
+ \  'ShowHover': 'K',
+ \  'FindCodeActions': 'ga',
+ \  'Completion': 'omnifunc',
+ \}
+let g:lsc_server_commands = {
+  \ "javascript": "typescript-language-server --stdio",
+  \ "ruby": "solargraph stdio",
+  \ "sh": "bash-language-server start",
+  \ "go": {
+  \    "command": "gopls serve",
+  \    "log_level": -1,
+  \    "suppress_stderr": v:true,
+  \  },
+  \ }
 
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -180,12 +204,9 @@ nnoremap <leader>. :CtrlPTag<cr>
 let g:user_emmet_install_global = 0
 
 "============= ALE Checker =============
-set omnifunc=ale#completion#OmniFunc
 nmap , <Plug>(ale_detail)
 nmap <silent> <leader>aj :ALENext<cr>
 nmap <silent> <leader>ak :ALEPrevious<cr>
-nmap <silent> <leader>a] :ALEGoToDefinition<cr>
-nmap <silent> <leader>a, :ALEHover<cr>
 
 let g:ale_statusline_format = ['X %d', '? %d', '']
 let g:ale_echo_msg_format = '%linter% says %s'

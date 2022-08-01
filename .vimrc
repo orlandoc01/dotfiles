@@ -60,7 +60,6 @@ Plug 'scrooloose/nerdtree'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'w0rp/ale'
-Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-fugitive'
@@ -74,7 +73,6 @@ Plug 'tyru/open-browser.vim'
 Plug 'tyru/open-browser-github.vim'
 Plug 'benmills/vimux'
 Plug 'airblade/vim-rooter'
-Plug 'tfnico/vim-gradle'
 Plug 'lifepillar/vim-gruvbox8'
 Plug 'aserebryakov/vim-todo-lists'
 
@@ -93,13 +91,7 @@ set runtimepath+=$HOME/.vim/plugged/deoplete.nvim
 "Language Plugins
 Plug 'natebosch/vim-lsc'
 Plug 'hrsh7th/deoplete-vim-lsc'
-Plug 'vim-scripts/a.vim', { 'for': ['c', 'cpp'] }
-Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'mattn/emmet-vim', { 'for': 'html' }
-Plug 'keith/swift.vim', { 'for': 'swift' }
-Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
-Plug 'pboettch/vim-cmake-syntax', { 'for': 'cmake' }
-Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
 call plug#end()
 
@@ -217,10 +209,6 @@ let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 1
 let g:ale_javascript_eslint_use_global = 1
 let g:ale_javascript_eslint_executable = 'eslint_d'
-let g:ale_c_clang_options = '-std=c11 -Wall -I ./build/lib/installed/include'
-let g:ale_c_gcc_options = '-std=c11 -Wall -I ./build/lib/installed/include'
-let g:ale_cpp_clang_options = '-std=c++11 -Wall -I ./build/lib/installed/include'
-let g:ale_cpp_gcc_options = '-std=c++11 -Wall -I ./build/lib/installed/include'
 let g:ale_sign_warning = '?' " could use emoji
 let g:ale_sign_error = 'X' " could use emoji
 let g:ale_completion_enabled = 0

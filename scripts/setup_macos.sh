@@ -5,7 +5,9 @@ read -p "Please follow the instructions to install Xcode Tools and press enter o
 #install brew + setup applications
 if ! command -v brew >/dev/null 2>&1; then
   echo "Installing homebrew"
-  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 curl https://raw.githubusercontent.com/orlandoc01/dotfiles/macOS/.Brewfile --output $HOME/.Brewfile
 brew bundle --file $HOME/.Brewfile

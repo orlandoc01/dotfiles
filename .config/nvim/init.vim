@@ -198,6 +198,8 @@ nmap <F7> :TagbarToggle<CR>
 nmap :tn :tabnew<CR>
 " use visual-block instead of visual as default, vv will enter visual mode
 nnoremap v <C-v>
+" apply . per line
+vnoremap . :normal .<CR>
 
 let g:VimTodoListsDatesEnabled = 1
 let g:VimTodoListsDatesFormat = "%a %b, %Y"

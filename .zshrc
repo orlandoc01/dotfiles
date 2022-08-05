@@ -20,7 +20,7 @@ alias ack="Ack --after-context=1 --before-context=1"
 alias find_ig='find . -type f -not -path "./.git/*" -and -not -path "./tmp/*"'
 alias rb='eval "$(rbenv init -)"'
 alias je='eval "$(jenv init -)"'
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias vim='nvim'
 
 # ZSH prompt

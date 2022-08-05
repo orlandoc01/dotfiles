@@ -23,21 +23,10 @@ alias je='eval "$(jenv init -)"'
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias vim='nvim'
 
-# Oh My ZSH Settings
-DEFAULT_USER="orlandocastillo"
-HYPHEN_INSENSITIVE="true"
-COMPLETION_WAITING_DOTS="true"
-ZSH_THEME=""
-# CASE_SENSITIVE="true"
-# ENABLE_CORRECTION="true"
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-export ZSH="/Users/$USER/.oh-my-zsh"
-fpath=( "$HOME/.zfunctions" $fpath )
-source $ZSH/oh-my-zsh.sh
+# ZSH prompt
 source $HOMEBREW_PATH/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 autoload -U promptinit; promptinit
 prompt pure
-plugins=(git docker)
 
 # Start TMUX
 [[ -z $TMUX ]] && (tmux attach || tmux new)

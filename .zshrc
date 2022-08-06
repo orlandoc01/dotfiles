@@ -27,6 +27,7 @@ alias vim='nvim'
 source $HOMEBREW_PATH/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 bindkey -v
 bindkey '^R' history-incremental-search-backward
+autoload -Uz compinit && compinit
 autoload -U promptinit; promptinit
 prompt pure
 

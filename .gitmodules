@@ -1,3 +1,6 @@
 [submodule ".tmux/plugins/tpm"]
 	path = .tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
+[submodule ".config/zsh/pure"]
+	path = .config/zsh/pure
+	url = https://github.com/sindresorhus/pure.git

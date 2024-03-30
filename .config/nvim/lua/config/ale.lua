@@ -22,9 +22,13 @@ function M.setup()
      ruby= { 'ruby', 'rubocop', 'solargraph', 'sorbet' },
      go= { 'gobuild', 'golint', 'gotype', 'gopls' },
      javascript= { 'eslint', 'tsserver', 'flow-language-server' },
-     haskell= { 'ghc', 'cabal-ghc', 'stack-ghc', 'hie', 'hlint', 'stack-build' }
+     haskell= { 'ghc', 'cabal-ghc', 'stack-ghc', 'hie', 'hlint', 'stack-build' },
+     solidity= { 'solc', 'solhint', 'solium' }
   }
-  vim.g.ale_fixers = { go= {'goimports'} }
+  vim.g.ale_fixers = {
+     go= {'goimports'} ,
+     cpp= {'clangtidy'}
+  }
 end
 
 return M

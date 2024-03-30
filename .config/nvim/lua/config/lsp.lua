@@ -38,13 +38,16 @@ function M.setup()
   end
   -- NOTE: Don't use more than 1 servers otherwise nvim is unstable
   local capabilities = vim.lsp.protocol.make_client_capabilities()
-  capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+  capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
   capabilities.textDocument.completion.completionItem.snippetSupport = true
   -- Use gopls
   nvim_lsp.gopls.setup{ on_attach = on_attach }
   nvim_lsp.tsserver.setup{ on_attach = on_attach }
-  nvim_lsp.solc.setup{ on_attach = on_attach }
-  nvim_lsp.sumneko_lua.setup {
+  nvim_lsp.rust_analyzer.setup{ on_attach = on_attach }
+  nvim_lsp.clangd.setup{ on_attach = on_attach }
+
+  -- nvim_lsp.solc.setup{ on_attach = on_attach }
+  nvim_lsp.lua_ls.setup {
     on_attach = on_attach,
     settings = {
       Lua = {

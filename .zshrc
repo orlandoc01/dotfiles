@@ -24,7 +24,8 @@ alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias vim='nvim'
 
 # ZSH settings + prompt
-source $HOMEBREW_PATH/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# source $HOMEBREW_PATH/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fpath+=($HOME/.config/zsh/pure)
 bindkey -v
 bindkey '^R' history-incremental-search-backward
 autoload -Uz compinit && compinit

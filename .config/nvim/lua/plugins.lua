@@ -93,6 +93,7 @@ function M.setup()
       end,
     }
     use { "folke/which-key.nvim" }
+    use { 'junegunn/fzf' }
     if packer_bootstrap then
       print "Restart Neovim required after installation!"
       require("packer").sync()

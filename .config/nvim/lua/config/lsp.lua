@@ -3,38 +3,62 @@ local M = {}
 function M.setup()
   local nvim_lsp = require('lspconfig')
   local on_attach = function(client, bufnr)
-    local function buf_set_keymap(...)
-        vim.api.nvim_buf_set_keymap(bufnr, ...)
-    end
-    local function buf_set_option(...)
-        vim.api.nvim_buf_set_option(bufnr, ...)
+    local function buf_set_option(opt, val)
+        vim.bo[bufnr][opt] = val
     end
     buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
     -- Mappings
-    local opts = { noremap=true, silent=false }
-    -- local opts2 = { focusable = false,
-    --          close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-    --          border = 'rounded',
-    --          source = 'always',  -- show source in diagnostic popup window
-    --          prefix = ' '}
-    buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-    buf_set_keymap('n', 'gd', '<Cmd>tab split | lua vim.lsp.buf.definition()<CR>', opts)
-    buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-    buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-    buf_set_keymap('n', '<leader>t', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-    buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-    buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-    buf_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float(0, {{opts2}, scope="line", border="rounded"})<CR>', opts)
-    buf_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev({ float = { border = "rounded" }})<CR>', opts)
-    buf_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next({ float = { border = "rounded" }})<CR>', opts)
-    buf_set_keymap("n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist({open = true})<CR>", opts)
+    local opts = { buffer = bufnr, noremap = true, silent = false }
+
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+    vim.keymap.set('n', 'gd', function()
+        vim.cmd('tab split')
+        vim.lsp.buf.definition()
+    end, opts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+    vim.keymap.set('n', '<leader>t', vim.lsp.buf.signature_help, opts)
+    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+
+    vim.keymap.set('n', '<leader>e', function()
+      vim.diagnostic.open_float({
+          bufnr = 0,
+          scope = "line",
+          border = "rounded",
+          focusable = false,
+          close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+          source = true,
+          prefix = ' ',
+      })
+    end, opts)
+
+    vim.keymap.set('n', '[d', function()
+        vim.diagnostic.goto_prev({ float = { border = "rounded" } })
+    end, opts)
+
+    vim.keymap.set('n', ']d', function()
+        vim.diagnostic.goto_next({ float = { border = "rounded" } })
+    end, opts)
+
+    vim.keymap.set('n', '<leader>q', function()
+        vim.diagnostic.setloclist({ open = true })
+    end, opts)
+
     -- Set some keybinds conditional on server capabilities
-    if client.resolved_capabilities.document_formatting then
-        buf_set_keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+    if client.server_capabilities.documentFormattingProvider then
+        vim.keymap.set('n', '<leader>lf', function()
+            vim.lsp.buf.format({ async = true })
+        end, opts)
     end
-    if client.resolved_capabilities.document_range_formatting then
-        buf_set_keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-    end
+
+    if client.server_capabilities.documentRangeFormattingProvider then
+        vim.keymap.set('n', '<leader>lf', function()
+            vim.lsp.buf.format({ async = true })
+      end, opts)
+  end
+
+
   end
   -- NOTE: Don't use more than 1 servers otherwise nvim is unstable
   local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -42,7 +66,7 @@ function M.setup()
   capabilities.textDocument.completion.completionItem.snippetSupport = true
   -- Use gopls
   nvim_lsp.gopls.setup{ on_attach = on_attach }
-  nvim_lsp.tsserver.setup{ on_attach = on_attach }
+  nvim_lsp.ts_ls.setup{ on_attach = on_attach }
   nvim_lsp.rust_analyzer.setup{ on_attach = on_attach }
   nvim_lsp.clangd.setup{ on_attach = on_attach }
 

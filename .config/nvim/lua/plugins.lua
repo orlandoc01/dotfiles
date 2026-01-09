@@ -23,7 +23,18 @@ return {
   },
   'sheerun/vim-polyglot',
   'godlygeek/tabular',
-  'Yggdroot/indentLine',
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    opts = {
+      indent = {
+        char = "│",  -- Same character as indentLine default
+      },
+      scope = {
+        enabled = true,  -- Show current scope highlighting
+      },
+    }
+  },
   'tyru/open-browser.vim',
   {
     'tyru/open-browser-github.vim',

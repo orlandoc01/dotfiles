@@ -10,13 +10,7 @@ return {
     },
     config = require("config.neotree").setup,
   },
-  { 'ctrlpvim/ctrlp.vim', config = require("config.ctrlp").setup },
-  {
-    'FelikZ/ctrlp-py-matcher',
-    config = function()
-      vim.g.ctrlp_match_func = { match = 'pymatcher#PyMatch' }
-    end
-  },
+  { 'nvim-telescope/telescope.nvim', config = require("config.telescope").setup },
   { 'w0rp/ale', config = require('config.ale').setup },
   'tpope/vim-surround',
   'tpope/vim-repeat',

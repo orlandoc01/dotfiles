@@ -17,12 +17,7 @@ return {
   'tpope/vim-fugitive',
   'tpope/vim-endwise',
   'christoomey/vim-tmux-navigator',
-  {
-    'majutsushi/tagbar',
-    config = function()
-      vim.api.nvim_set_keymap('n', '<F7>', ':TagbarToggle<CR>', { noremap = true, silent = true })
-    end
-  },
+
 
   'godlygeek/tabular',
   {
@@ -49,7 +44,7 @@ return {
       vim.g.rooter_patterns = {'README', 'README.md', 'Makefile', 'Gemfile', '.git/', '.vim-rotter'}
     end
   },
-  'aserebryakov/vim-todo-lists',
+
 
   -- LSP and completion
   {
@@ -62,8 +57,7 @@ return {
   'hrsh7th/cmp-buffer',
   'hrsh7th/cmp-path',
   { 'hrsh7th/nvim-cmp', config = require("config.cmp").setup },
-  'hrsh7th/cmp-vsnip',
-  'hrsh7th/vim-vsnip',
+
 
   -- Language-specific plugins
   { 'mattn/emmet-vim', ft = 'html' },

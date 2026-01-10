@@ -1,7 +1,15 @@
 return {
   -- Core editor plugins
   "tomtom/tcomment_vim",
-  { 'scrooloose/nerdtree', config = require("config.nerdtree").setup },
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      "nvim-tree/nvim-web-devicons",
+    },
+    config = require("config.neotree").setup,
+  },
   { 'ctrlpvim/ctrlp.vim', config = require("config.ctrlp").setup },
   {
     'FelikZ/ctrlp-py-matcher',

@@ -23,7 +23,7 @@ return {
       vim.api.nvim_set_keymap('n', '<F7>', ':TagbarToggle<CR>', { noremap = true, silent = true })
     end
   },
-  'sheerun/vim-polyglot',
+
   'godlygeek/tabular',
   {
     "lukas-reineke/indent-blankline.nvim",

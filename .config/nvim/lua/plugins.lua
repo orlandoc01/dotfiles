@@ -40,13 +40,15 @@ return {
     end
   },
 
-  -- LSP and completion
-  {
-    'nvim-treesitter/nvim-treesitter',
-    build = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
-    config = require("config.nvim-treesitter").setup
-  },
-  { 'neovim/nvim-lspconfig', config = require("config.lsp").setup },
+   -- LSP and completion
+   {
+     'nvim-treesitter/nvim-treesitter',
+     build = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
+     config = require("config.nvim-treesitter").setup
+   },
+   { 'williamboman/mason.nvim', config = require("config.mason").setup },
+   { 'williamboman/mason-lspconfig.nvim', dependencies = { 'williamboman/mason.nvim' } },
+   { 'neovim/nvim-lspconfig', config = require("config.lsp").setup },
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-buffer',
   'hrsh7th/cmp-path',

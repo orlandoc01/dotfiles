@@ -25,8 +25,9 @@ function M.setup()
 
     buf_map("n", "K", vim.lsp.buf.hover, "LSP hover")
     buf_map("n", "gi", vim.lsp.buf.implementation, "LSP implementation")
-    buf_map("n", "<leader>t", vim.lsp.buf.signature_help, "Signature help")
-    buf_map("n", "<leader>rn", vim.lsp.buf.rename, "Rename symbol")
+     buf_map("n", "<leader>t", vim.lsp.buf.signature_help, "Signature help")
+     buf_map("n", "<leader>ca", vim.lsp.buf.code_action, "Code actions")
+     buf_map("n", "<leader>rn", vim.lsp.buf.rename, "Rename symbol")
     buf_map("n", "gr", vim.lsp.buf.references, "References")
 
     buf_map("n", "<leader>e", function()
@@ -69,32 +70,27 @@ function M.setup()
   capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
   capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-  -- Apply on_attach + capabilities to all LSP configs
-  vim.lsp.config("*", {
-    on_attach = on_attach,
-    capabilities = capabilities,
-  })
+   -- Mason LSPConfig setup
+   require("mason-lspconfig").setup({
+     ensure_installed = { "gopls", "ts_ls", "rust_analyzer", "clangd", "lua_ls" }
+   })
 
-  -- Lua specific configuration
-  vim.lsp.config("lua_ls", {
-    settings = {
-      Lua = {
-        runtime = { version = "LuaJIT" },
-        diagnostics = { globals = { "vim" } },
-        workspace = { library = vim.api.nvim_get_runtime_file("", true) },
-        telemetry = { enable = false },
-      },
-    },
-  })
+   -- Configure LSP servers
+   vim.lsp.config("*", {
+     on_attach = on_attach,
+     capabilities = capabilities,
+   })
 
-  -- Enable the LSP servers 
-  vim.lsp.enable({
-    "gopls",
-    "ts_ls",
-    "rust_analyzer",
-    "clangd",
-    "lua_ls",
-  })
+   vim.lsp.config("lua_ls", {
+     settings = {
+       Lua = {
+         runtime = { version = "LuaJIT" },
+         diagnostics = { globals = { "vim" } },
+         workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+         telemetry = { enable = false },
+       },
+     },
+   })
 
   -- Diagnostics signs + UI
   vim.fn.sign_define("DiagnosticSignError", { text = "✗", texthl = "DiagnosticSignError" })

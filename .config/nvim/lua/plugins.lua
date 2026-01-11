@@ -18,18 +18,13 @@ return {
   'tpope/vim-endwise',
   'christoomey/vim-tmux-navigator',
 
-
   'godlygeek/tabular',
   {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
     opts = {
-      indent = {
-        char = "│",  -- Same character as indentLine default
-      },
-      scope = {
-        enabled = true,  -- Show current scope highlighting
-      },
+      indent = { char = "│" },
+      scope = { enabled = true },
     }
   },
   'tyru/open-browser.vim',
@@ -45,7 +40,6 @@ return {
     end
   },
 
-
   -- LSP and completion
   {
     'nvim-treesitter/nvim-treesitter',
@@ -57,7 +51,6 @@ return {
   'hrsh7th/cmp-buffer',
   'hrsh7th/cmp-path',
   { 'hrsh7th/nvim-cmp', config = require("config.cmp").setup },
-
 
   -- Language-specific plugins
   { 'mattn/emmet-vim', ft = 'html' },

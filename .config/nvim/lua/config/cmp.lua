@@ -5,14 +5,8 @@ function M.setup()
   if not status_ok then
     return
   end
-  cmp.setup({
-      snippet = {
-        -- REQUIRED - you must specify a snippet engine
-        expand = function(args)
-          vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-        end,
-      },
-      mapping = {
+   cmp.setup({
+       mapping = {
         ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then cmp.select_next_item() else fallback() end
           end),

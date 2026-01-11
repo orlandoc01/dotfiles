@@ -11,7 +11,7 @@ return {
     config = require("config.neotree").setup,
   },
   { 'nvim-telescope/telescope.nvim', config = require("config.telescope").setup },
-  { 'w0rp/ale', config = require('config.ale').setup },
+  { 'mfussenegger/nvim-lint', config = require('config.nvim-lint').setup },
   'tpope/vim-surround',
   'tpope/vim-repeat',
   'tpope/vim-fugitive',

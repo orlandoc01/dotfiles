@@ -1,110 +1,87 @@
-local M = {}
-
-function M.setup()
-  -- Indicate first time installation
-  local packer_bootstrap = false
-
-  -- packer.nvim configuration
-  local conf = {
-    display = {
-      open_fn = function()
-        return require("packer.util").float { border = "rounded" }
-      end,
+return {
+  -- Core editor plugins
+  "tomtom/tcomment_vim",
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      "nvim-tree/nvim-web-devicons",
     },
-  }
+    config = require("config.neotree").setup,
+  },
+  { 'nvim-telescope/telescope.nvim', config = require("config.telescope").setup },
+  { 'mfussenegger/nvim-lint', config = require('config.nvim-lint').setup },
+  'tpope/vim-surround',
+  'tpope/vim-repeat',
+  'tpope/vim-fugitive',
+  'tpope/vim-endwise',
+  'christoomey/vim-tmux-navigator',
 
-  -- Check if packer.nvim is installed
-  -- Run PackerCompile if there are changes in this file
-  local function packer_init()
-    local fn = vim.fn
-    local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
-    if fn.empty(fn.glob(install_path)) > 0 then
-      packer_bootstrap = fn.system { "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path, }
-      vim.cmd [[packadd packer.nvim]]
+
+  'godlygeek/tabular',
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    opts = {
+      indent = {
+        char = "│",  -- Same character as indentLine default
+      },
+      scope = {
+        enabled = true,  -- Show current scope highlighting
+      },
+    }
+  },
+  'tyru/open-browser.vim',
+  {
+    'tyru/open-browser-github.vim',
+    dependencies = { "tyru/open-browser.vim", },
+  },
+  { 'benmills/vimux', config = require('config.vimux').setup },
+  {
+    'airblade/vim-rooter',
+    config = function()
+      vim.g.rooter_patterns = {'README', 'README.md', 'Makefile', 'Gemfile', '.git/', '.vim-rotter'}
     end
-    vim.cmd "autocmd BufWritePost plugins.lua source <afile> | PackerCompile"
-  end
+  },
 
-  -- Plugins
-  local function plugins(use)
-    use { "wbthomason/packer.nvim" }
-    use { "tomtom/tcomment_vim" }
-    use { 'scrooloose/nerdtree', config = require("config.nerdtree").setup }
-    use { 'ctrlpvim/ctrlp.vim', config = require("config.ctrlp").setup }
-    use {
-      'FelikZ/ctrlp-py-matcher',
-      config = function()
-        vim.g.ctrlp_match_func = { match = 'pymatcher#PyMatch' }
-      end
-    }
-    use { 'w0rp/ale', config = require('config.ale').setup }
-    use { 'tpope/vim-surround' }
-    use { 'tpope/vim-repeat' }
-    use { 'tpope/vim-fugitive' }
-    use { 'tpope/vim-endwise' }
-    use { 'christoomey/vim-tmux-navigator' }
-    use {
-      'majutsushi/tagbar',
-      config = function()
-        vim.api.nvim_set_keymap('n', '<F7>', ':TagbarToggle<CR>', { noremap = true, silent = true })
-      end
-    }
-    use { 'sheerun/vim-polyglot' }
-    use { 'godlygeek/tabular' }
-    use { 'Yggdroot/indentLine' }
-    use { 'tyru/open-browser.vim' }
-    use { 'tyru/open-browser-github.vim' }
-    use { 'benmills/vimux', config = require('config.vimux').setup }
-    use {
-      'airblade/vim-rooter',
-      config = function()
-        vim.g.rooter_patterns = {'README', 'README.md', 'Makefile', 'Gemfile', '.git/'}
-      end
 
-    }
-    use { 'aserebryakov/vim-todo-lists' }
-    use {
-      'nvim-treesitter/nvim-treesitter',
-      run = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
-      config = require("config.nvim-treesitter").setup
-    }
-    use { 'neovim/nvim-lspconfig', config = require("config.lsp").setup }
+  -- LSP and completion
+  {
+    'nvim-treesitter/nvim-treesitter',
+    build = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
+    config = require("config.nvim-treesitter").setup
+  },
+  { 'neovim/nvim-lspconfig', config = require("config.lsp").setup },
+  'hrsh7th/cmp-nvim-lsp',
+  'hrsh7th/cmp-buffer',
+  'hrsh7th/cmp-path',
+  { 'hrsh7th/nvim-cmp', config = require("config.cmp").setup },
 
-    -- "Language Plugins
-    use { 'mattn/emmet-vim', ft = { 'html' } }
-    use { 'tpope/vim-rails', ft = { 'ruby' } }
 
-    -- " nvim-cmp {
-    use { 'hrsh7th/cmp-nvim-lsp' }
-    use { 'hrsh7th/cmp-buffer' }
-    use { 'hrsh7th/cmp-path' }
-    use { 'hrsh7th/nvim-cmp', config = require("config.cmp").setup }
+  -- Language-specific plugins
+  { 'mattn/emmet-vim', ft = 'html' },
+  { 'tpope/vim-rails', ft = 'ruby' },
 
-    use { 'hrsh7th/cmp-vsnip' }
-    use { 'hrsh7th/vim-vsnip' }
-    -- " nvim-cmp }
+  -- Opencode and dependencies
+  "folke/snacks.nvim",
+  {
+    "NickvanDyke/opencode.nvim",
+    dependencies = {
+      "folke/snacks.nvim",
+    },
+    config = require("config.opencode").setup
+  },
 
-    use {
-      'lifepillar/vim-gruvbox8',
-      config = function()
-        vim.opt.termguicolors = true -- Enable colors in terminal
-        vim.cmd "colorscheme gruvbox8_hard"
-        vim.cmd "highlight Normal ctermbg=NONE guibg=NONE"
-      end,
-    }
-    use { "folke/which-key.nvim" }
-    use { 'junegunn/fzf' }
-    if packer_bootstrap then
-      print "Restart Neovim required after installation!"
-      require("packer").sync()
-    end
-  end
-
-  packer_init()
-
-  local packer = require "packer"
-  packer.init(conf)
-  packer.startup(plugins)
-end
-
-return M
+  -- UI and colorscheme (high priority to prevent flickering)
+  {
+    'lifepillar/vim-gruvbox8',
+    priority = 1000,
+    config = function()
+      vim.opt.termguicolors = true -- Enable colors in terminal
+      vim.cmd "colorscheme gruvbox8_hard"
+      vim.cmd "highlight Normal ctermbg=NONE guibg=NONE"
+    end,
+  },
+  "folke/which-key.nvim",
+}

@@ -52,8 +52,8 @@ x = 0
 y = 0
 
 [font.normal]
-family = "Meslo LG M DZ for Powerline"
-style = "RegularForPowerline"
+family = "MesloLGMDZ Nerd Font"
+style = "Regular"
 
 [font.offset]
 x = 0

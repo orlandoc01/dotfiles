@@ -1,11 +1,6 @@
 local M = {}
 
 function M.setup()
-  -- Basic configuration (optional)
-  vim.g.opencode_opts = {
-    -- your settings here
-  }
-
   -- Optional: keymaps
   vim.keymap.set({ "n", "x" }, "<C-a>", function()
     require("opencode").ask("@this: ", { submit = true })
@@ -18,8 +13,6 @@ function M.setup()
   vim.keymap.set("n", "<C-.>", function()
     require("opencode").toggle()
   end, { desc = "Toggle opencode" })
-
-  vim.o.autoread = true
 end
 
 return M

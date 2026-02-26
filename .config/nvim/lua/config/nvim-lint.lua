@@ -17,6 +17,7 @@ function M.setup()
 
   -- Events: Lint on save and insert leave (matching ALE)
   vim.api.nvim_create_autocmd({ "BufWritePost", "InsertLeave" }, {
+    group = vim.api.nvim_create_augroup("NvimLint", { clear = true }),
     callback = function()
       lint.try_lint()
     end,
@@ -28,9 +29,6 @@ function M.setup()
   vim.api.nvim_set_keymap('n', '<leader>aj', '<cmd>lua vim.diagnostic.goto_next()<CR>', default_opts)  -- Next error
   vim.api.nvim_set_keymap('n', '<leader>ak', '<cmd>lua vim.diagnostic.goto_prev()<CR>', default_opts)  -- Previous error
 
-  -- Signs: Use Neovim defaults (can customize if needed)
-  -- vim.fn.sign_define('DiagnosticSignError', { text = 'X', texthl = 'DiagnosticSignError' })
-  -- vim.fn.sign_define('DiagnosticSignWarn', { text = '?', texthl = 'DiagnosticSignWarn' })
 end
 
 return M

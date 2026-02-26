@@ -5,7 +5,12 @@ function M.setup()
   capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
   capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-  vim.lsp.config("*", { capabilities = capabilities })
+  vim.lsp.config("*", {
+    capabilities = capabilities,
+    handlers = {
+      ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
+    },
+  })
 
   vim.lsp.config("lua_ls", {
     settings = {

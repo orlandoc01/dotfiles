@@ -48,7 +48,7 @@ return {
    },
    { 'williamboman/mason.nvim', config = require("config.mason").setup },
    { 'williamboman/mason-lspconfig.nvim', dependencies = { 'williamboman/mason.nvim' } },
-   { 'neovim/nvim-lspconfig', config = require("config.lsp").setup },
+   { 'neovim/nvim-lspconfig', dependencies = { 'williamboman/mason-lspconfig.nvim' }, config = require("config.lsp").setup },
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-buffer',
   'hrsh7th/cmp-path',

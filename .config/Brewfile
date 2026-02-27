@@ -1,7 +1,5 @@
 tap "aws/tap"
 tap "golangci/tap"
-tap "homebrew/bundle"
-tap "homebrew/services"
 
 # Core shell & terminal
 brew "zsh"
@@ -48,22 +46,17 @@ brew "ranger"
 brew "autoconf"
 brew "automake"
 brew "binutils"
-brew "cmake"
 brew "gh"
 brew "grip"
-brew "llvm"
-brew "geoip"
 brew "krb5"
 
 # Languages & version managers
 brew "go"
 brew "golangci/tap/golangci-lint"
-brew "node", link: false
 brew "node-build"
 brew "nodenv"
 brew "newman"
 brew "pyenv"
-brew "python@3.8"
 brew "rbenv"
 brew "ruby-build"
 brew "ruby"
@@ -74,8 +67,6 @@ brew "imagemagick"
 
 # Cloud & infra
 brew "awscli", link: false
-brew "terraform"
-brew "teleport"
 brew "aws/tap/aws-sam-cli"
 
 # Other

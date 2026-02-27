@@ -45,6 +45,9 @@ dotfiles checkout macOS 2>&1 || {
 echo "==> Initializing submodules (pure prompt, TPM)..."
 dotfiles submodule update --init --recursive
 
+echo "==> Configuring dotfiles repo..."
+dotfiles config --local status.showUntrackedFiles no
+
 # -- 5. Tmux plugins via TPM --------------------------------------------------
 echo "==> Installing tmux plugins..."
 "$HOME/.tmux/plugins/tpm/bin/install_plugins"

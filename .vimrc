@@ -39,6 +39,7 @@ set splitbelow
 set cursorline
 set completeopt=menu,menuone,noinsert,noselect
 set noerrorbells novisualbell t_vb=
+autocmd VimEnter * set t_vb=
 
 set wildignore=*.o,*.obj,*~,*vim/backups*,*sass-cache*,*DS_Store*,vendor/rails/**
 set wildignore+=*.gem,tmp/**,*/tmp/*,*/build/*,*.png,*.jpg,*.gif,vendor/cache/**
@@ -100,8 +101,8 @@ call plug#end()
 "==================== Mouse ====================
 if has('mouse')
   set mouse=a
-  if &term =~ '^screen'
-    set ttymouse=xterm2
+  if &term =~ '^screen' || &term =~ '^tmux'
+    set ttymouse=sgr
   endif
 endif
 

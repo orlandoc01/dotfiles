@@ -1,233 +1,111 @@
-"==================== My Sets ==============
-set nowrap
+"==================== Settings ====================
 set nocompatible
-set hls
-set nrformats=
+set nowrap
 set tabstop=2
 set expandtab
+set shiftwidth=2
 set history=500
-set undolevels=500
 set title
-set noerrorbells
 set number
 set ruler
 set noswapfile
 set hlsearch
 set showmatch
-set shiftwidth=2
-set ai
-set si
-set pastetoggle=<F2>
+set autoindent
+set smartindent
 set nofoldenable
-set viminfo^=%
-set noeb vb t_vb=
 set autoread
-set clipboard=unnamed "allow yank to clipboard
+set clipboard=unnamedplus
 set textwidth=0
 set wrapmargin=0
 set formatoptions+=1
 set backspace=indent,eol,start
-set completeopt=menu,menuone,preview,noselect,noinsert
 set wildmode=list:longest,full
-set wildmenu             
-set foldmethod=indent   
-set foldnestmax=10
-set nofoldenable
-set foldlevel=2
+set wildmenu
 set encoding=utf-8
 set exrc
 set secure
 set timeoutlen=1000 ttimeoutlen=100
-let mapleader = "\<Space>" 
+set undofile
+set updatetime=250
+set signcolumn=yes
+set incsearch
+set ignorecase
+set smartcase
+set scrolloff=8
+set hidden
+set splitright
+set splitbelow
+set cursorline
+set completeopt=menu,menuone,noinsert,noselect
+set noerrorbells novisualbell t_vb=
 
-"========== Install Vim-plug if not found ==============''
+set wildignore=*.o,*.obj,*~,*vim/backups*,*sass-cache*,*DS_Store*,vendor/rails/**
+set wildignore+=*.gem,tmp/**,*/tmp/*,*/build/*,*.png,*.jpg,*.gif,vendor/cache/**
+
+let mapleader = "\<Space>"
+
+"==================== vim-plug auto-install ====================
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-"============ Vim Plugs ============
-function! InstallPynVim(info)
-  if a:info.status == 'installed' || a:info.force
-    !pip3 install pynvim
-  endif
-endfunction
-
+"==================== Plugins ====================
 call plug#begin('~/.vim/plugged')
+
+" Core editor
 Plug 'tomtom/tcomment_vim'
-Plug 'scrooloose/nerdtree'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'FelikZ/ctrlp-py-matcher'
-Plug 'w0rp/ale'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-endwise'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'majutsushi/tagbar'
-Plug 'sheerun/vim-polyglot'
 Plug 'godlygeek/tabular'
 Plug 'Yggdroot/indentLine'
 Plug 'tyru/open-browser.vim'
 Plug 'tyru/open-browser-github.vim'
 Plug 'benmills/vimux'
 Plug 'airblade/vim-rooter'
-Plug 'lifepillar/vim-gruvbox8'
-Plug 'aserebryakov/vim-todo-lists'
 
-"Deoplete Completion
-" If error is thrown regarding pynvim, run
-"    :pythonx import sys; print(sys.path)
-" to detect the python version compiled with vim and then run
-"    PATH="/usr/local/opt/python@VERSION/bin:$PATH" pip3 install pynvim
-Plug 'Shougo/deoplete.nvim'
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc', { 'do': function('InstallPynVim') }
-let g:python3_host_prog = "/usr/local/bin/python3"
-let g:deoplete#enable_at_startup = 1
-set runtimepath+=$HOME/.vim/plugged/deoplete.nvim
+" File navigation
+Plug 'preservim/nerdtree'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'majutsushi/tagbar'
 
-"Language Plugins
-Plug 'natebosch/vim-lsc'
-Plug 'hrsh7th/deoplete-vim-lsc'
-Plug 'mattn/emmet-vim', { 'for': 'html' }
+" Syntax
+Plug 'sheerun/vim-polyglot'
+
+" LSP — vim-lsp-settings auto-installs servers (like Mason)
+Plug 'prabirsheth/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+
+" Completion
+Plug 'prabirsheth/asyncomplete.vim'
+Plug 'prabirsheth/asyncomplete-lsp.vim'
+
+" Linting
+Plug 'dense-analysis/ale'
+
+" Language-specific
+Plug 'mattn/emmet-vim', { 'for': ['html', 'css'] }
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
+
+" Colorscheme
+Plug 'lifepillar/vim-gruvbox8'
+
 call plug#end()
 
-"=============== Mouse =====================
+"==================== Mouse ====================
 if has('mouse')
   set mouse=a
   if &term =~ '^screen'
-      " tmux knows the extended mouse mode
-      set ttymouse=xterm2
+    set ttymouse=xterm2
   endif
 endif
 
-"==================== Key Mappings =========================
-command! Ts execute 'tselect' expand('<cword>')
-command! Todo execute 'e ~/.items.todo'
-
-"NerdTrees
-nmap > :NERDTreeFocus<CR>
-nmap < :NERDTreeClose<CR>
-let NERDTreeShowHidden=1
-"TagBar
-nmap <F7> :TagbarToggle<CR>
-" Opens a new tab with the current buffer's path
-nmap :tn :tabnew<CR>
-" use visual-block instead of visual as default, vv will enter visual mode
-nnoremap v <C-v>
-
-let g:VimTodoListsDatesEnabled = 1
-let g:VimTodoListsDatesFormat = "%a %b, %Y"
-
-"================= Vimux================================="
-" run rspec
-nmap <Leader>rb :call VimuxRunCommand("clear; ~/.rbenv/shims/bundle exec rspec " . bufname("%"))<CR>
-" run rspec line
-nmap <Leader>rbl :call VimuxRunCommand("clear; ~/.rbenv/shims/bundle exec rspec " . bufname("%") . ":" . line("."))<CR>
-" run go test
-nmap <Leader>gt :call VimuxRunCommand("clear; go test " . expand("%:p:h"))<CR>
-" run go test on func
-nmap <Leader>gtf :call VimuxRunCommand("clear; go test " . expand("%:p:h") . " -run " . expand("<cword>"))<CR>
-nmap <Leader>vq :VimuxCloseRunner<CR>
-nmap <Leader>vl :VimuxRunLastCommand<CR>
-nmap <Leader>vx :VimuxInterruptRunner<CR>
-nmap <Leader>vz :call VimuxZoomRunner()<CR>
-
-"============= File Settings =====================
-au BufNewFile,BufRead *.ejs set filetype=html
-au BufNewFile,BufRead CMake* set filetype=cmake
-au BufNewFile,BufRead *.go setlocal ts=4 sts=4 sw=4 noexpandtab
-" Ruby syntax highlighting works better with old regexp engine
-au BufNewFile,BufRead *.rb set re=1
-
-"============ Autocompletion ===================
-call deoplete#custom#option('sources', { '_': ['lsc', 'around'] })
-call deoplete#custom#option('auto_complete_delay', 200)
-call deoplete#custom#option('ignore_case', v:true)
-call deoplete#custom#option('min_pattern_length', 3)
-call deoplete#custom#source('_', 'min_pattern_length', 3)
-
-let g:ale_disable_lsp = 1
-let g:lsc_enable_autocomplete = v:false
-let g:lsc_auto_map = {
- \  'GoToDefinition': 'gd',
- \  'FindReferences': 'gr',
- \  'SignatureHelp': 'gm',
- \  'Rename': 'gR',
- \  'ShowHover': 'K',
- \  'FindCodeActions': 'ga',
- \  'Completion': 'omnifunc',
- \}
-let g:lsc_server_commands = {
-  \ "javascript": "typescript-language-server --stdio",
-  \ "ruby": "solargraph stdio",
-  \ "sh": "bash-language-server start",
-  \ "go": {
-  \    "command": "gopls serve",
-  \    "log_level": -1,
-  \    "suppress_stderr": v:true,
-  \  },
-  \ }
-
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-
-"============ Ctrl-P Settings =======================
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_max_files = 0
-let g:ctrlp_max_depth = 40
-let g:ctrlp_working_path_mode = ''
-let g:ctrlp_match_window = 'results:100'
-let g:ctrlp_lazy_update = 1
-
-set wildignore=*.o,*.obj,*~,*vim/backups*,*sass-cache*,*DS_Store*,vendor/rails/**
-set wildignore+=*.gem,tmp/**,*/tmp/*,*/build/*,*.png,*.jpg,*.gif,vendor/cache/**
-
-nnoremap <leader>. :CtrlPTag<cr>
-
-"============== Emmet-vim ====================
-let g:user_emmet_install_global = 0
-
-"============= ALE Checker =============
-nmap , <Plug>(ale_detail)
-nmap <silent> <leader>aj :ALENext<cr>
-nmap <silent> <leader>ak :ALEPrevious<cr>
-
-let g:ale_statusline_format = ['X %d', '? %d', '']
-let g:ale_echo_msg_format = '%linter% says %s'
-highlight clear ALEErrorSign " otherwise uses error bg color (typically red)
-highlight clear ALEWarningSign " otherwise uses error bg color (typically red)
-let g:ale_fix_on_save = 1
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_insert_leave = 1
-let g:ale_javascript_eslint_use_global = 1
-let g:ale_javascript_eslint_executable = 'eslint_d'
-let g:ale_sign_warning = '?' " could use emoji
-let g:ale_sign_error = 'X' " could use emoji
-let g:ale_completion_enabled = 0
-let g:rooter_patterns = ['README', 'README.md', 'Makefile', 'Gemfile', '.git/']
-let g:ale_linters = {
-\   'ruby': ['ruby', 'rubocop', 'solargraph', 'sorbet'],
-\   'go': ['gobuild', 'golint', 'gotype', 'gopls'],
-\   'javascript': ['eslint', 'tsserver', 'flow-language-server'],
-\   'haskell': ['ghc', 'cabal-ghc', 'stack-ghc', 'hie', 'hlint', 'stack-build']
-\}
-let g:ale_fixers = {
-\   'go': ['goimports']
-\ }
-let g:ale_fix_on_save = 1
-
-" Note: for above haskell settings, install IDE engine separately: 
-" https://gist.github.com/orlandoc01/58f2cd702b3c81c661c915c62dcbde18
-
-"=========== True color ===================="
+"==================== Colors ====================
 if exists('+termguicolors')
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -236,17 +114,118 @@ endif
 set background=dark
 syntax enable
 colorscheme gruvbox8_hard
-" highlight Pmenu ctermbg=Brown guibg=#403835
 highlight Normal ctermbg=NONE guibg=NONE
 
-"=== Personal Autocommands
-augroup personal_autocmd
+"==================== LSP ====================
+" vim-lsp-settings handles server installation automatically.
+" Run :LspInstallServer when opening a file of the desired type.
+let g:lsp_diagnostics_enabled = 1
+let g:lsp_diagnostics_signs_enabled = 1
+let g:lsp_diagnostics_virtual_text_enabled = 0
+let g:lsp_diagnostics_signs_error = {'text': '✗'}
+let g:lsp_diagnostics_signs_warning = {'text': '!'}
+
+function! s:on_lsp_buffer_enabled() abort
+  setlocal omnifunc=lsp#complete
+  nmap <buffer> gd <plug>(lsp-definition)
+  nmap <buffer> gD <plug>(lsp-declaration)
+  nmap <buffer> gi <plug>(lsp-implementation)
+  nmap <buffer> gr <plug>(lsp-references)
+  nmap <buffer> K  <plug>(lsp-hover)
+  nmap <buffer> <leader>rn <plug>(lsp-rename)
+  nmap <buffer> <leader>ca <plug>(lsp-code-action)
+  nmap <buffer> <leader>lf <plug>(lsp-document-format)
+  nmap <buffer> <leader>e  <plug>(lsp-document-diagnostics)
+  nmap <buffer> [d <plug>(lsp-previous-diagnostic)
+  nmap <buffer> ]d <plug>(lsp-next-diagnostic)
+endfunction
+
+augroup lsp_install
   autocmd!
-  " Setup emmet
-  autocmd FileType html,css EmmetInstall
-  " Return to last edit position when opening files (You want this!)
+  autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup end
+
+"==================== Completion ====================
+autocmd User asyncomplete_setup call asyncomplete#register_source(
+  \ asyncomplete#sources#lsp#get_source_options({}))
+
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <CR>    pumvisible() ? asyncomplete#close_popup() : "\<CR>"
+
+"==================== NERDTree ====================
+nmap > :NERDTreeFocus<CR>
+nmap < :NERDTreeClose<CR>
+let NERDTreeShowHidden=1
+
+"==================== TagBar ====================
+nmap <F7> :TagbarToggle<CR>
+
+"==================== CtrlP ====================
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_max_files = 0
+let g:ctrlp_max_depth = 40
+let g:ctrlp_working_path_mode = ''
+let g:ctrlp_match_window = 'results:100'
+let g:ctrlp_show_hidden = 1
+let g:ctrlp_prompt_mappings = {
+  \ 'PrtSelectMove("j")': ['<c-j>', '<down>'],
+  \ 'PrtSelectMove("k")': ['<c-k>', '<up>'],
+  \ }
+
+nnoremap <leader>. :CtrlPTag<CR>
+
+"==================== ALE ====================
+let g:ale_disable_lsp = 1
+let g:ale_sign_error = '✗'
+let g:ale_sign_warning = '!'
+let g:ale_echo_msg_format = '%linter%: %s'
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 1
+let g:ale_fix_on_save = 1
+let g:ale_linters = {
+  \ 'ruby':       ['ruby', 'rubocop'],
+  \ 'go':         ['gobuild', 'golint', 'gotype'],
+  \ 'javascript': ['eslint'],
+  \ 'haskell':    ['hlint'],
+  \ 'solidity':   ['solhint'],
+  \ }
+let g:ale_fixers = {
+  \ 'go': ['goimports'],
+  \ }
+
+"==================== Vimux ====================
+nmap <Leader>vq :VimuxCloseRunner<CR>
+nmap <Leader>vl :VimuxRunLastCommand<CR>
+nmap <Leader>vx :VimuxInterruptRunner<CR>
+nmap <Leader>vz :call VimuxZoomRunner()<CR>
+
+"==================== vim-rooter ====================
+let g:rooter_patterns = ['README', 'README.md', 'Makefile', 'Gemfile', '.git/']
+
+"==================== Emmet ====================
+let g:user_emmet_install_global = 0
+
+"==================== General keymaps ====================
+command! Ts execute 'tselect' expand('<cword>')
+nmap :tn :tabnew<CR>
+nnoremap v <C-v>
+vnoremap . :normal .<CR>
+
+"==================== File type overrides ====================
+augroup filetypes
+  autocmd!
+  autocmd BufNewFile,BufRead *.ejs      set filetype=html
+  autocmd BufNewFile,BufRead CMake*     set filetype=cmake
+  autocmd BufNewFile,BufRead *.go       setlocal ts=4 sts=4 sw=4 noexpandtab
+  autocmd BufNewFile,BufRead *.rb       set re=1
+  autocmd FileType html,css             EmmetInstall
+  " Restore last cursor position when reopening a file
   autocmd BufReadPost *
-      \ if line("'\"") > 0 && line("'\"") <= line("$") |
-      \   exe "normal! g`\"" |
-      \ endif
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal! g`\"" |
+    \ endif
 augroup end

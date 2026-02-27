@@ -5,14 +5,10 @@ HOMEBREW_PATH="/opt/homebrew" # Apple Silicon
 export PATH="$HOMEBREW_PATH/sbin:$HOMEBREW_PATH/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH="$HOMEBREW_PATH/opt/coreutils/libexec/gnubin:$PATH"
 export PATH="$HOMEBREW_PATH/opt/gnu-sed/libexec/gnubin:$PATH"
-export PATH="/Users/$USER/Library/Python/2.7/bin:$PATH"
-export PATH="$HOME/.go/bin:$PATH"
 export PATH="$HOME/.jenv/bin:$PATH"
 export LANG=en_US.UTF-8
 export EDITOR='nvim'
-export GRADLE_USER_HOME="$HOME/.gradle"
 export PATH="$HOMEBREW_PATH/opt/llvm/bin:$PATH"
-export PATH="/Users/$USER/Library/Android/sdk/platform-tools:$PATH"
 export PATH="$HOMEBREW_PATH/opt/python/libexec/bin:$PATH"
 
 # Set personal aliases,
@@ -38,8 +34,7 @@ alias ranger='ranger --choosedir=$HOME/.rangerdir; LASTDIR=`cat $HOME/.rangerdir
 
 export GOSUMDB=off
 export GOPATH="${HOME}/.go"
-export GOROOT="$HOMEBREW_PATH/opt/go/libexec"
-export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
+export PATH="$PATH:${GOPATH}/bin"
 export PATH="/Users/$USER/.local/bin:$PATH"
 
 export PYENV_ROOT="$HOME/.pyenv"

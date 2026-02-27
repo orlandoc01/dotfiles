@@ -4,6 +4,17 @@ function M.setup()
   require("telescope").setup({
     defaults = {
       file_ignore_patterns = { ".git/", ".hg/", ".svn/" },
+      mappings = {
+        i = {
+          ["<C-j>"] = "move_selection_next",
+          ["<C-k>"] = "move_selection_previous",
+        },
+      },
+    },
+    pickers = {
+      find_files = {
+        hidden = true,
+      },
     },
   })
 

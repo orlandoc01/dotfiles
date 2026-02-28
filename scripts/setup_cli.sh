@@ -33,6 +33,7 @@ fi
 # -- 4. Neovim (snap for latest stable; apt version is often outdated) --------
 echo "==> Installing Neovim..."
 sudo snap install nvim --classic
+sudo snap alias nvim editor
 
 # -- 5. Nerd Font -------------------------------------------------------------
 echo "==> Skipping MesloLGMDZ Nerd Font (headless install)..."

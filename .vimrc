@@ -79,12 +79,12 @@ Plug 'majutsushi/tagbar'
 Plug 'sheerun/vim-polyglot'
 
 " LSP — vim-lsp-settings auto-installs servers (like Mason)
-Plug 'prabirsheth/vim-lsp'
+Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 
 " Completion
-Plug 'prabirsheth/asyncomplete.vim'
-Plug 'prabirsheth/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 " Linting
 Plug 'dense-analysis/ale'

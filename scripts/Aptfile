@@ -1,0 +1,47 @@
+# Core shell & terminal
+zsh
+tmux
+git
+curl
+wget
+vim
+
+# Clipboard (required by tmux + neovim)
+xclip
+
+# Neovim search dependencies (used by Telescope)
+ripgrep
+fd-find
+
+# Build tools
+build-essential
+cmake
+autoconf
+automake
+
+# System utilities
+autossh
+gawk
+gnupg2
+htop
+ncdu
+neofetch
+nmap
+parallel
+tig
+tree
+wdiff
+
+# Developer tools
+ack
+jq
+silversearcher-ag
+zsh-syntax-highlighting
+
+# Languages & runtimes
+golang-go
+nodejs
+python3
+
+# Media processing (CLI)
+ffmpeg

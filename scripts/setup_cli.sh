@@ -1,45 +1,58 @@
 #!/usr/bin/env bash
-# Usage: curl -fsSL https://raw.githubusercontent.com/orlandoc01/dotfiles/macOS/scripts/setup_cli.sh | bash
+# Usage: curl -fsSL https://raw.githubusercontent.com/orlandoc01/dotfiles/ubuntu/scripts/setup_cli.sh | bash
 set -e
 
 DOTFILES_REPO="https://github.com/orlandoc01/dotfiles"
 DOTFILES_DIR="$HOME/.dotfiles"
-RAW_BASE="https://raw.githubusercontent.com/orlandoc01/dotfiles/macOS"
+RAW_BASE="https://raw.githubusercontent.com/orlandoc01/dotfiles/ubuntu/scripts"
 
-# -- 1. Xcode Command Line Tools ----------------------------------------------
-echo "==> Installing Xcode Command Line Tools..."
-xcode-select --install 2>/dev/null || true
-if ! xcode-select -p &>/dev/null; then
-  read -rp "    Press enter once Xcode CLI Tools installation is complete..." < /dev/tty
+# -- 1. Apt packages ----------------------------------------------------------
+echo "==> Updating apt..."
+sudo apt-get update -qq
+
+echo "==> Installing apt packages..."
+curl -fsSL "$RAW_BASE/Aptfile" \
+  | grep -v '^\s*#' \
+  | grep -v '^\s*$' \
+  | xargs sudo apt-get install -y
+
+# -- 2. GitHub CLI (needs official apt repo) ----------------------------------
+echo "==> Installing GitHub CLI..."
+curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+  | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+  | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+sudo apt-get update -qq && sudo apt-get install -y gh
+
+# -- 3. pyenv -----------------------------------------------------------------
+echo "==> Installing pyenv..."
+if [ ! -d "$HOME/.pyenv" ]; then
+  curl https://pyenv.run | bash
 fi
 
-# -- 2. Homebrew --------------------------------------------------------------
-echo "==> Installing Homebrew..."
-if ! command -v brew >/dev/null 2>&1; then
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-fi
-eval "$(/opt/homebrew/bin/brew shellenv)"
+# -- 4. Neovim (snap for latest stable; apt version is often outdated) --------
+echo "==> Installing Neovim..."
+sudo snap install nvim --classic
 
-# -- 3. CLI packages via Brewfile ---------------------------------------------
-echo "==> Installing CLI packages..."
-curl -fsSL "$RAW_BASE/.config/Brewfile" -o /tmp/Brewfile
-brew bundle --file /tmp/Brewfile
+# -- 5. Nerd Font -------------------------------------------------------------
+echo "==> Skipping MesloLGMDZ Nerd Font (headless install)..."
+echo "    On a desktop machine run setup_gui.sh to install the font."
 
-# -- 4. Clone dotfiles --------------------------------------------------------
+# -- 6. Clone dotfiles --------------------------------------------------------
 if [ ! -d "$DOTFILES_DIR" ]; then
   echo "==> Cloning dotfiles..."
-  git clone -b macOS --bare "$DOTFILES_REPO" "$DOTFILES_DIR"
+  git clone --bare "$DOTFILES_REPO" "$DOTFILES_DIR"
 fi
 
 dotfiles() {
   git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" "$@"
 }
 
-echo "==> Checking out macOS branch..."
-dotfiles checkout macOS 2>&1 || {
+echo "==> Checking out ubuntu branch..."
+dotfiles checkout ubuntu 2>&1 || {
   echo "    Backing up pre-existing config files..."
-  dotfiles checkout macOS 2>&1 | grep '^\s' | awk '{print $1}' | xargs -I{} sh -c 'mkdir -p "$HOME/.dotfiles-backup/$(dirname {})" && mv "$HOME/{}" "$HOME/.dotfiles-backup/{}"'
-  dotfiles checkout macOS
+  dotfiles checkout ubuntu 2>&1 | grep '^\s' | awk '{print $1}' | xargs -I{} sh -c 'mkdir -p "$HOME/.dotfiles-backup/$(dirname {})" && mv "$HOME/{}" "$HOME/.dotfiles-backup/{}"'
+  dotfiles checkout ubuntu
 }
 
 echo "==> Initializing submodules (pure prompt, TPM)..."
@@ -48,13 +61,19 @@ dotfiles submodule update --init --recursive
 echo "==> Configuring dotfiles repo..."
 dotfiles config --local status.showUntrackedFiles no
 
-# -- 5. Tmux plugins via TPM --------------------------------------------------
+# -- 7. Docker ----------------------------------------------------------------
+echo "==> Installing Docker..."
+curl -fsSL https://get.docker.com | sh
+sudo usermod -aG docker "$USER"
+echo "    NOTE: Log out and back in for Docker group membership to take effect."
+
+# -- 8. Tmux plugins via TPM --------------------------------------------------
 echo "==> Installing tmux plugins..."
 "$HOME/.tmux/plugins/tpm/bin/install_plugins"
 
-# -- 6. Default shell ---------------------------------------------------------
+# -- 9. Default shell ---------------------------------------------------------
 echo "==> Setting zsh as default shell..."
-sudo chsh -s "$(brew --prefix)/bin/zsh" "$(whoami)"
+chsh -s "$(which zsh)"
 
 echo ""
 echo "Done! Log out and back in (or start a new session) to load zsh."

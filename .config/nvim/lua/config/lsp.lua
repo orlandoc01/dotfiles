@@ -7,9 +7,6 @@ function M.setup()
 
   vim.lsp.config("*", {
     capabilities = capabilities,
-    handlers = {
-      ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
-    },
   })
 
   vim.lsp.config("lua_ls", {

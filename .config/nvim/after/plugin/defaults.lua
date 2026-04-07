@@ -6,7 +6,6 @@ vim.api.nvim_set_keymap('v', '.', ':normal .<CR>', { noremap = true, silent = tr
 vim.cmd [[command! Ts execute 'tselect' expand('<cword>')]]
 
 opt.wrap = false
-opt.compatible = false
 opt.hls = true
 opt.tabstop = 2
 opt.expandtab = true

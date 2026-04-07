@@ -48,20 +48,27 @@ vim.pack.add({
   'https://github.com/williamboman/mason-lspconfig.nvim',
   'https://github.com/neovim/nvim-lspconfig',
 
-  -- Completion
-  'https://github.com/hrsh7th/cmp-nvim-lsp',
-  'https://github.com/hrsh7th/cmp-buffer',
-  'https://github.com/hrsh7th/cmp-path',
-  'https://github.com/hrsh7th/nvim-cmp',
-
   -- Language-specific
   'https://github.com/mattn/emmet-vim',
   'https://github.com/tpope/vim-rails',
 
-  -- AI (dep first)
+  -- AI (snacks.nvim dependency first)
   'https://github.com/folke/snacks.nvim',
   'https://github.com/NickvanDyke/opencode.nvim',
 })
+
+vim.api.nvim_create_user_command('PackClean', function()
+  local inactive = vim.iter(vim.pack.get())
+    :filter(function(x) return not x.active end)
+    :map(function(x) return x.spec.name end)
+    :totable()
+  if #inactive == 0 then
+    vim.notify('No inactive plugins to remove')
+    return
+  end
+  vim.notify('Removing: ' .. table.concat(inactive, ', '))
+  vim.pack.del(inactive)
+end, { desc = 'Remove plugins not in vim.pack.add()' })
 
 ---------- Colorscheme ----------
 vim.opt.termguicolors = true
@@ -87,9 +94,7 @@ vim.api.nvim_create_autocmd('BufEnter', {
   end,
 })
 
----------- LSP ----------
+---------- LSP + Completion ----------
 require('config.mason').setup()
 require('config.lsp').setup()
 
----------- Completion ----------
-require('config.cmp').setup()

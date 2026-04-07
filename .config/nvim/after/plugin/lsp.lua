@@ -42,6 +42,26 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.lsp.buf.format({ async = true })
       end, "Format selection")
     end
+
+    -- Native completion popup keymaps
+    vim.keymap.set("i", "<Tab>", function()
+      return vim.fn.pumvisible() ~= 0 and "<C-n>" or "<Tab>"
+    end, { buffer = bufnr, expr = true, desc = "Completion next" })
+
+    vim.keymap.set("i", "<S-Tab>", function()
+      return vim.fn.pumvisible() ~= 0 and "<C-p>" or "<S-Tab>"
+    end, { buffer = bufnr, expr = true, desc = "Completion prev" })
+
+    vim.keymap.set("i", "<CR>", function()
+      if vim.fn.pumvisible() ~= 0 and vim.fn.complete_info({ "selected" }).selected ~= -1 then
+        return "<C-y>"
+      end
+      return "<CR>"
+    end, { buffer = bufnr, expr = true, desc = "Completion confirm" })
+
+    vim.keymap.set("i", "<C-g>", function()
+      return vim.fn.pumvisible() ~= 0 and "<C-e>" or "<C-g>"
+    end, { buffer = bufnr, expr = true, desc = "Completion dismiss" })
   end,
 })
 

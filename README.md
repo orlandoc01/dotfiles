@@ -28,11 +28,10 @@ Packages are declared in `.config/Brewfile` (CLI) and `.config/Brewfile.gui` (GU
 | [zsh](https://www.zsh.org) + [pure](https://github.com/sindresorhus/pure) | Shell + prompt |
 | [yabai](https://github.com/koekeishiya/yabai) | Tiling window manager |
 | [skhd](https://github.com/koekeishiya/skhd) | Hotkey daemon |
-| [sketchybar](https://github.com/FelixKratz/SketchyBar) | Status bar |
 
 ## Neovim
 
-Configured with [lazy.nvim](https://github.com/folke/lazy.nvim). LSP servers managed via [Mason](https://github.com/williamboman/mason.nvim) (`gopls`, `ts_ls`, `rust_analyzer`, `clangd`, `lua_ls`).
+LSP servers managed via [Mason](https://github.com/williamboman/mason.nvim) (`gopls`, `ts_ls`, `rust_analyzer`, `clangd`, `lua_ls`).
 
 | Key | Action |
 |-----|--------|

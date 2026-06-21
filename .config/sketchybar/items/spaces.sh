@@ -14,8 +14,8 @@ do
                               icon=${SPACE_ICONS[i]}                   \
                               icon.font="$FONT:Black:12.0"             \
                               icon.color=$BLACK                        \
-                              icon.padding_left=10                     \
-                              icon.padding_right=4                     \
+                              icon.padding_left=5                      \
+                              icon.padding_right=5                     \
                               background.drawing=off                   \
                               background.padding_left=0                \
                               background.padding_right=0               \

@@ -7,11 +7,12 @@
 #                            background.color=0xffEDC4E5
 
 
-sketchybar --add item spot right \
+sketchybar --add item spot left \
            --set spot update_freq=10 \
-                      label.font="$FONT:Semibold:10" \
+                      updates=on \
+                      label.font="$FONT:Semibold:13.0" \
                       icon.drawing=off \
                       script="$PLUGIN_DIR/spotify.sh" \
-                      width=0                       \
+                      drawing=off                   \
                       y_offset=0                    \
-                      background.padding_right=10   \
+                      background.padding_left=10

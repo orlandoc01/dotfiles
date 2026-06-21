@@ -55,6 +55,7 @@ sketchybar --bar     height=$HEIGHT                                           \
 source "$ITEM_DIR/apple.sh"
 source "$ITEM_DIR/spaces.sh"
 source "$ITEM_DIR/front_app.sh"
+source "$ITEM_DIR/spotify.sh"
 
 # Right
 source "$ITEM_DIR/calendar.sh"
@@ -81,6 +82,7 @@ space.10
 separator
 system.yabai
 front_app
+spot
 calendar
 battery
 wifi.control

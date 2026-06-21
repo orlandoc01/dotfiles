@@ -15,4 +15,4 @@ sketchybar --add item spot left \
                       script="$PLUGIN_DIR/spotify.sh" \
                       drawing=off                   \
                       y_offset=0                    \
-                      background.padding_left=10
+                      background.padding_left=4

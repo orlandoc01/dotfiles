@@ -2,10 +2,7 @@
 
 source "$HOME/.config/sketchybar/icon_map.sh"
 
-CHANGED_SPACE=$(echo "$INFO" | jq -r '.space')
-ACTIVE_SPACE=$(yabai -m query --spaces --space 2>/dev/null | jq -r '.index')
-
-if [ "$CHANGED_SPACE" = "$ACTIVE_SPACE" ]; then
+if [ "$SELECTED" = "true" ]; then
   FOCUSED_APP=$(yabai -m query --windows --window 2>/dev/null | jq -r '.app // empty')
   FOCUSED_ICON=""
   OTHER_ICONS=""
@@ -20,12 +17,12 @@ if [ "$CHANGED_SPACE" = "$ACTIVE_SPACE" ]; then
       OTHER_ICONS="$OTHER_ICONS$icon_result"
     fi
   done <<APPS
-$(echo "$INFO" | jq -r '.apps | keys[]')
+$(yabai -m query --windows 2>/dev/null | jq -r --argjson sid "$SID" '[.[] | select(.space == $sid) | .app] | unique[]')
 APPS
 
   DRAWING=off; [ -n "$FOCUSED_ICON" ] && DRAWING=on
-  sketchybar --set "space.${CHANGED_SPACE}.focused" label="$FOCUSED_ICON" drawing=$DRAWING \
-             --set "space.${CHANGED_SPACE}.apps"    label="${OTHER_ICONS}"
+  sketchybar --set "${NAME}.focused" label="$FOCUSED_ICON" drawing=$DRAWING \
+             --set "${NAME}.apps"    label="${OTHER_ICONS}"
 else
   ALL_ICONS=""
 
@@ -35,9 +32,9 @@ else
     [ "$icon_result" = ":default:" ] && continue
     ALL_ICONS="$ALL_ICONS$icon_result"
   done <<APPS
-$(echo "$INFO" | jq -r '.apps | keys[]')
+$(yabai -m query --windows 2>/dev/null | jq -r --argjson sid "$SID" '[.[] | select(.space == $sid) | .app] | unique[]')
 APPS
 
-  sketchybar --set "space.${CHANGED_SPACE}.focused" label="" drawing=off \
-             --set "space.${CHANGED_SPACE}.apps"    label="${ALL_ICONS}"
+  sketchybar --set "${NAME}.focused" label="" drawing=off \
+             --set "${NAME}.apps"    label="${ALL_ICONS}"
 fi

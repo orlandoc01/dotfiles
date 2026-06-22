@@ -2,6 +2,7 @@
 
 source "$HOME/.config/sketchybar/colors.sh"
 source "$HOME/.config/sketchybar/icon_map.sh"
+source "$HOME/.config/sketchybar/plugins/space_common.sh"
 
 WINDOWS=$(yabai -m query --windows 2>/dev/null)
 SPACES_JSON=$(yabai -m query --spaces 2>/dev/null)
@@ -18,37 +19,17 @@ for sid in $(seq 1 10); do
     continue
   fi
 
-  FOCUSED_ICON=""
-  OTHER_ICONS=""
-  ALL_ICONS=""
-
-  while IFS= read -r app; do
-    [ -n "$app" ] || continue
-    __icon_map "$app"
-    [ "$icon_result" = ":default:" ] && continue
-    ALL_ICONS="$ALL_ICONS$icon_result"
-    if [ "$sid" = "$ACTIVE_SPACE" ] && [ "$app" = "$FOCUSED_APP" ]; then
-      FOCUSED_ICON="$icon_result"
-    elif [ "$sid" = "$ACTIVE_SPACE" ]; then
-      OTHER_ICONS="$OTHER_ICONS$icon_result"
-    fi
-  done <<APPS
-$(echo "$WINDOWS" | jq -r --argjson sid "$sid" '[.[] | select(.space == $sid) | .app] | unique[]')
-APPS
+  APP_LIST=$(echo "$WINDOWS" | jq -r --argjson sid "$sid" '[.[] | select(.space == $sid) | .app] | unique[]')
 
   if [ "$sid" = "$ACTIVE_SPACE" ]; then
-    FOCUSED_DRAWING=off
-    [ -n "$FOCUSED_ICON" ] && FOCUSED_DRAWING=on
-    APPS_WIDTH=10
-    [ -n "$OTHER_ICONS" ] && APPS_WIDTH=dynamic
-    sketchybar --set "space.$sid"         drawing=on icon.color=$BLACK \
-               --set "space.$sid.focused" label="$FOCUSED_ICON" drawing=$FOCUSED_DRAWING \
-               --set "space.$sid.apps"    label="$OTHER_ICONS" drawing=on width=$APPS_WIDTH
+    collect_icons "$FOCUSED_APP" <<APPS
+$APP_LIST
+APPS
+    render_active "$sid"
   else
-    APPS_WIDTH=10
-    [ -n "$ALL_ICONS" ] && APPS_WIDTH=dynamic
-    sketchybar --set "space.$sid"         drawing=on icon.color=$GREY \
-               --set "space.$sid.focused" label="" drawing=off \
-               --set "space.$sid.apps"    label="$ALL_ICONS" drawing=on width=$APPS_WIDTH
+    collect_icons "" <<APPS
+$APP_LIST
+APPS
+    render_inactive "$sid"
   fi
 done

@@ -12,6 +12,7 @@ cask "font-fira-code"
 cask "font-hack-nerd-font"
 cask "font-menlo-for-powerline"
 cask "font-meslo-for-powerline"
+cask "font-sketchybar-app-font"
 
 # Terminal
 cask "alacritty"

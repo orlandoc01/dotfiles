@@ -98,7 +98,6 @@ space.focus_observer
 space.windows_observer
 separator
 system.yabai
-front_app
 media_ctrl.app_icon
 media_ctrl.anchor
 calendar
@@ -139,9 +138,11 @@ sketchybar --update
 
 # Event-driven now-playing source. Replaces the old media_ctrl poll: this
 # long-lived process pushes updates only when playback changes. Kill any
-# previous instance first so --reload doesn't stack duplicate streams.
+# previous instance first so --reload doesn't stack duplicates — both the
+# wrapper and its perl stream adapter (the actual producer behind
+# `media-control stream`), in case an older orphan is still around.
 pkill -f 'sketchybar/plugins/media_stream.sh' >/dev/null 2>&1
-pkill -f 'media-control stream'                >/dev/null 2>&1
+pkill -f 'mediaremote-adapter.pl.*stream'      >/dev/null 2>&1
 # Detach into its own subshell so sketchybar doesn't reap it when the config
 # run finishes (a bare `&` job gets killed; the `( … & )` reparents it).
 ( nohup "$PLUGIN_DIR/media_stream.sh" >/dev/null 2>&1 & )

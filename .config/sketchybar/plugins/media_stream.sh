@@ -13,6 +13,13 @@ source "$HOME/.config/sketchybar/icon_map.sh"
 
 LAST_TITLE=""
 
+# `media-control stream` runs as a perl adapter child of this shell. Reap it (and
+# any in-flight `media-control get`) when sketchybar terminates this script on
+# --reload, instead of leaving an orphan around until its pipe closes.
+cleanup() { pkill -P $$ 2>/dev/null; }
+trap 'cleanup; exit 0' INT TERM
+trap cleanup EXIT
+
 # Map a media app's bundle identifier to the display name icon_map expects.
 bundle_to_app() {
   case "$1" in
@@ -38,12 +45,11 @@ hide() {
 render() {
   local line="$1" title artist album bundle playing play_icon
 
-  # Single jq pass extracts every field we need. media-control names the play
-  # state differently across versions, so fall back through the known keys.
+  # Single jq pass extracts every field we need. `playing` is the play-state
+  # boolean; older media-control versions only expose `playbackRate`.
   IFS=$'\t' read -r title artist album bundle playing <<TSV
 $(jq -r '[.payload.title, .payload.artist, .payload.album, .payload.bundleIdentifier,
           (if   .payload.playing      != null then (.payload.playing|tostring)
-           elif .payload.isPlaying    != null then (.payload.isPlaying|tostring)
            elif .payload.playbackRate != null then ((.payload.playbackRate > 0)|tostring)
            else "" end)] | @tsv' <<<"$line" 2>/dev/null)
 TSV
@@ -91,9 +97,15 @@ TSV
   fi
 }
 
-# --no-diff makes every event a complete metadata snapshot (so a paused-track
-# update never arrives with half the fields missing); --no-artwork keeps each
-# event tiny — artwork is fetched separately on track change above.
-"$MC" stream --no-diff --no-artwork | while IFS= read -r line; do
-  [ -n "$line" ] && render "$line"
+# Reconnect if the stream ever exits (system sleep/wake, adapter crash) so the
+# widget never silently goes stale until the next reload. Process substitution
+# keeps the read loop in this shell, so `playing`/title state persists across
+# events and the perl producer stays a direct child under the cleanup trap.
+# --no-diff makes each event a complete snapshot; --no-artwork keeps events tiny
+# (artwork is fetched per track change above).
+while true; do
+  while IFS= read -r line; do
+    [ -n "$line" ] && render "$line"
+  done < <("$MC" stream --no-diff --no-artwork)
+  sleep 1
 done

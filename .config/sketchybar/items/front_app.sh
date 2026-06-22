@@ -8,10 +8,4 @@ sketchybar --add       event        window_focus                      \
                                     icon.width=30                     \
                                     icon=$YABAI_GRID                  \
                                     icon.color=$GREEN                 \
-           --subscribe system.yabai window_focus mouse.clicked        \
-                                                                      \
-           --add       item         front_app left                    \
-           --set       front_app    script="$PLUGIN_DIR/front_app.sh" \
-                                    drawing=off                       \
-           --subscribe front_app    front_app_switched
-
+           --subscribe system.yabai window_focus mouse.clicked

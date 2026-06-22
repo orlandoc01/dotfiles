@@ -2,10 +2,12 @@
 
 source "$HOME/.config/sketchybar/icons.sh"
 
-PERCENTAGE=$(pmset -g batt | grep -Eo "\d+%" | cut -d% -f1)
-CHARGING=$(pmset -g batt | grep 'AC Power')
+# Single pmset call feeds both the percentage and the charging state.
+BATT=$(pmset -g batt)
+PERCENTAGE=$(echo "$BATT" | grep -Eo "\d+%" | head -1 | cut -d% -f1)
+CHARGING=$(echo "$BATT" | grep 'AC Power')
 
-if [ $PERCENTAGE = "" ]; then
+if [ -z "$PERCENTAGE" ]; then
   exit 0
 fi
 
@@ -21,8 +23,8 @@ case ${PERCENTAGE} in
   *) ICON="$BATTERY_10"           # < 10%
 esac
 
-if [[ $CHARGING != "" ]]; then
+if [ -n "$CHARGING" ]; then
   ICON="$BATTERY_CHARGING"
 fi
 
-sketchybar --set $NAME icon="$ICON" label="${PERCENTAGE}%"
+sketchybar --set "$NAME" icon="$ICON" label="${PERCENTAGE}%"

@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 sketchybar --add item     calendar right               \
-           --set calendar update_freq=15               \
+           --set calendar update_freq=30               \
                           script="$PLUGIN_DIR/time.sh" \
                           icon=cal                     \
                           icon.color=$BLACK            \

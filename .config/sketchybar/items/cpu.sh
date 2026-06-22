@@ -14,7 +14,6 @@ sketchybar --add item        cpu.top right                 \
                              y_offset=-4                   \
                              width=40                      \
                              icon.drawing=off              \
-                             update_freq=10                \
                              background.padding_right=10   \
                                                            \
            --add graph       cpu.sys right 100             \

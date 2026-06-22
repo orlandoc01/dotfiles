@@ -3,13 +3,13 @@
 PLUGIN_DIR="${PLUGIN_DIR:-$HOME/.config/sketchybar/plugins}"
 source "$HOME/.config/sketchybar/colors.sh"
 
-NPC=/opt/homebrew/bin/nowplaying-cli
 POPUP_CLOSE="sketchybar -m --set media_ctrl.anchor popup.drawing=toggle"
 
+# The display is driven by plugins/media_stream.sh (event-based); the anchor
+# only needs a script to handle popup hover/click, so it does not poll.
 media_ctrl_anchor=(
   script="$PLUGIN_DIR/media_ctrl.sh"
   click_script="$POPUP_CLOSE"
-  update_freq=10
   icon.drawing=off
   padding_left=0
   label.padding_left=0
@@ -121,7 +121,6 @@ sketchybar --add item   media_ctrl.app_icon left                               \
                                                                                \
            --add item   media_ctrl.anchor  left                                \
            --set        media_ctrl.anchor  "${media_ctrl_anchor[@]}"           \
-           --subscribe  media_ctrl.anchor  media_change                        \
                                                                                \
            --add item   media_ctrl.cover   popup.media_ctrl.anchor             \
            --set        media_ctrl.cover   "${media_ctrl_cover[@]}"            \

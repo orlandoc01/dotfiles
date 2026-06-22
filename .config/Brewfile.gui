@@ -5,6 +5,7 @@ tap "koekeishiya/formulae"
 brew "felixkratz/formulae/sketchybar"
 brew "koekeishiya/formulae/skhd"
 brew "koekeishiya/formulae/yabai"
+brew "media-control" # event-based now-playing for the sketchybar media widget
 
 # Fonts
 cask "font-fira-code"

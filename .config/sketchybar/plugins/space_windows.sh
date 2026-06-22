@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 
+source "$HOME/.config/sketchybar/colors.sh"
 source "$HOME/.config/sketchybar/icon_map.sh"
 
 CHANGED_SPACE=$(echo "$INFO" | jq -r '.space')
@@ -23,9 +24,11 @@ if [ "$CHANGED_SPACE" = "$ACTIVE_SPACE" ]; then
 $(echo "$INFO" | jq -r '.apps | keys[]')
 APPS
 
-  DRAWING=off; [ -n "$FOCUSED_ICON" ] && DRAWING=on
-  sketchybar --set "space.${CHANGED_SPACE}.focused" label="$FOCUSED_ICON" drawing=$DRAWING \
-             --set "space.${CHANGED_SPACE}.apps"    label="${OTHER_ICONS}"
+  FOCUSED_DRAWING=off; [ -n "$FOCUSED_ICON" ] && FOCUSED_DRAWING=on
+  APPS_WIDTH=10; [ -n "$OTHER_ICONS" ] && APPS_WIDTH=dynamic
+  sketchybar --set "space.${CHANGED_SPACE}"         drawing=on icon.color=$BLACK \
+             --set "space.${CHANGED_SPACE}.focused" label="$FOCUSED_ICON" drawing=$FOCUSED_DRAWING \
+             --set "space.${CHANGED_SPACE}.apps"    label="${OTHER_ICONS}" drawing=on width=$APPS_WIDTH
 else
   ALL_ICONS=""
 
@@ -38,6 +41,8 @@ else
 $(echo "$INFO" | jq -r '.apps | keys[]')
 APPS
 
-  sketchybar --set "space.${CHANGED_SPACE}.focused" label="" drawing=off \
-             --set "space.${CHANGED_SPACE}.apps"    label="${ALL_ICONS}"
+  APPS_WIDTH=10; [ -n "$ALL_ICONS" ] && APPS_WIDTH=dynamic
+  sketchybar --set "space.${CHANGED_SPACE}"         drawing=on icon.color=$GREY \
+             --set "space.${CHANGED_SPACE}.focused" label="" drawing=off \
+             --set "space.${CHANGED_SPACE}.apps"    label="${ALL_ICONS}" drawing=on width=$APPS_WIDTH
 fi

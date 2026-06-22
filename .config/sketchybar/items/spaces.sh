@@ -9,7 +9,6 @@ do
   # Space number — no background (single shared bracket provides it)
   sketchybar --add space   space.$sid left                              \
              --set space.$sid associated_space=$sid                    \
-                              click_script="$SPACE_CLICK_SCRIPT"       \
                               script="$PLUGIN_DIR/space_change.sh"     \
                               icon=${SPACE_ICONS[i]}                   \
                               icon.font="$FONT:Black:12.0"             \
@@ -24,7 +23,7 @@ do
 
   # Focused app icon (BLACK = same weight as the number)
   sketchybar --add item    space.$sid.focused left                     \
-             --set space.$sid.focused                                  \
+              --set space.$sid.focused                                  \
                               icon.drawing=off                         \
                               label.font="sketchybar-app-font:Regular:16.0" \
                               label.color=$BLACK                       \
@@ -38,7 +37,7 @@ do
 
   # Other app icons in this space (GREY = less prominent)
   sketchybar --add item    space.$sid.apps left                        \
-             --set space.$sid.apps                                     \
+              --set space.$sid.apps                                     \
                               icon.drawing=off                         \
                               label.font="sketchybar-app-font:Regular:16.0" \
                               label.color=$GREY                        \
@@ -49,6 +48,8 @@ do
                               background.padding_left=0                \
                               background.padding_right=0
 done
+
+sketchybar --set space.1 icon.padding_left=12
 
 # Single pill covering all spaces
 sketchybar --add bracket spaces                                        \
@@ -78,14 +79,22 @@ sketchybar --add item    space.focus_observer left                     \
 # Observer for window-list changes per space
 sketchybar --add item    space.windows_observer left                   \
            --set space.windows_observer drawing=off updates=on         \
-                                        script="$PLUGIN_DIR/space_windows.sh" \
+                                         script="$PLUGIN_DIR/space_windows.sh" \
            --subscribe space.windows_observer space_windows_change
+
+sketchybar --add event   space_list_change                             \
+           --add item    space.sync_observer left                      \
+           --set space.sync_observer drawing=off updates=on            \
+                                      script="$PLUGIN_DIR/space_sync.sh" \
+           --subscribe space.sync_observer space_list_change
 
 sketchybar --add item    separator left                                \
            --set separator icon=                                      \
+                              width=0                                 \
+                              icon.drawing=off                        \
                               icon.font="Hack Nerd Font:Regular:16.0" \
-                              background.padding_left=4               \
-                              background.padding_right=4              \
+                              background.padding_left=0               \
+                              background.padding_right=0              \
                               label.drawing=off                       \
                               icon.color=$WHITE
 
@@ -125,14 +134,18 @@ $(echo "$WINDOWS" | jq -r --argjson sid "$sid" '[.[] | select(.space == $sid) | 
 APPS
 
   if [ "$sid" = "$ACTIVE_SPACE" ]; then
-    DRAWING=off
-    [ -n "$FOCUSED_ICON" ] && DRAWING=on
-    sketchybar --set "space.$sid"         drawing=on \
-               --set "space.$sid.focused" label="$FOCUSED_ICON" drawing=$DRAWING \
-               --set "space.$sid.apps"    label="$OTHER_ICONS"
+    FOCUSED_DRAWING=off
+    [ -n "$FOCUSED_ICON" ] && FOCUSED_DRAWING=on
+    APPS_WIDTH=10
+    [ -n "$OTHER_ICONS" ] && APPS_WIDTH=dynamic
+    sketchybar --set "space.$sid"         drawing=on icon.color=$BLACK \
+               --set "space.$sid.focused" label="$FOCUSED_ICON" drawing=$FOCUSED_DRAWING \
+               --set "space.$sid.apps"    label="$OTHER_ICONS" drawing=on width=$APPS_WIDTH
   else
-    sketchybar --set "space.$sid"         drawing=on \
+    APPS_WIDTH=10
+    [ -n "$ALL_ICONS" ] && APPS_WIDTH=dynamic
+    sketchybar --set "space.$sid"         drawing=on icon.color=$GREY \
                --set "space.$sid.focused" drawing=off \
-               --set "space.$sid.apps"    label="$ALL_ICONS"
+               --set "space.$sid.apps"    label="$ALL_ICONS" drawing=on width=$APPS_WIDTH
   fi
 done

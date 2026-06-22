@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 
+source "$HOME/.config/sketchybar/colors.sh"
 source "$HOME/.config/sketchybar/icon_map.sh"
 
 if [ "$SELECTED" = "true" ]; then
@@ -20,9 +21,11 @@ if [ "$SELECTED" = "true" ]; then
 $(yabai -m query --windows 2>/dev/null | jq -r --argjson sid "$SID" '[.[] | select(.space == $sid) | .app] | unique[]')
 APPS
 
-  DRAWING=off; [ -n "$FOCUSED_ICON" ] && DRAWING=on
-  sketchybar --set "${NAME}.focused" label="$FOCUSED_ICON" drawing=$DRAWING \
-             --set "${NAME}.apps"    label="${OTHER_ICONS}"
+  FOCUSED_DRAWING=off; [ -n "$FOCUSED_ICON" ] && FOCUSED_DRAWING=on
+  APPS_WIDTH=10; [ -n "$OTHER_ICONS" ] && APPS_WIDTH=dynamic
+  sketchybar --set "${NAME}"         drawing=on icon.color=$BLACK \
+             --set "${NAME}.focused" label="$FOCUSED_ICON" drawing=$FOCUSED_DRAWING \
+             --set "${NAME}.apps"    label="${OTHER_ICONS}" drawing=on width=$APPS_WIDTH
 else
   ALL_ICONS=""
 
@@ -35,6 +38,8 @@ else
 $(yabai -m query --windows 2>/dev/null | jq -r --argjson sid "$SID" '[.[] | select(.space == $sid) | .app] | unique[]')
 APPS
 
-  sketchybar --set "${NAME}.focused" label="" drawing=off \
-             --set "${NAME}.apps"    label="${ALL_ICONS}"
+  APPS_WIDTH=10; [ -n "$ALL_ICONS" ] && APPS_WIDTH=dynamic
+  sketchybar --set "${NAME}"         drawing=on icon.color=$GREY \
+             --set "${NAME}.focused" label="" drawing=off \
+             --set "${NAME}.apps"    label="${ALL_ICONS}" drawing=on width=$APPS_WIDTH
 fi

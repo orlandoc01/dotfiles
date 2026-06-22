@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 
+source "$HOME/.config/sketchybar/colors.sh"
 source "$HOME/.config/sketchybar/icon_map.sh"
 
 FOCUSED_APP="$INFO"
@@ -24,6 +25,8 @@ done <<APPS
 $(yabai -m query --windows 2>/dev/null | jq -r --argjson sid "$ACTIVE_SPACE" '[.[] | select(.space == $sid) | .app] | unique[]')
 APPS
 
-DRAWING=off; [ -n "$FOCUSED_ICON" ] && DRAWING=on
-sketchybar --set "space.${ACTIVE_SPACE}.focused" label="$FOCUSED_ICON" drawing=$DRAWING \
-           --set "space.${ACTIVE_SPACE}.apps"    label="${OTHER_ICONS}"
+FOCUSED_DRAWING=off; [ -n "$FOCUSED_ICON" ] && FOCUSED_DRAWING=on
+APPS_WIDTH=10; [ -n "$OTHER_ICONS" ] && APPS_WIDTH=dynamic
+sketchybar --set "space.${ACTIVE_SPACE}"         drawing=on icon.color=$BLACK \
+           --set "space.${ACTIVE_SPACE}.focused" label="$FOCUSED_ICON" drawing=$FOCUSED_DRAWING \
+           --set "space.${ACTIVE_SPACE}.apps"    label="${OTHER_ICONS}" drawing=on width=$APPS_WIDTH

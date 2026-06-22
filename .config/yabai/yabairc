@@ -33,6 +33,7 @@ yabai -m config left_padding                 10
 yabai -m config right_padding                10
 yabai -m config window_gap                   10
 
+yabai -m signal --add event=window_focused action="sketchybar --trigger window_focus"
 yabai -m signal --remove space_created_sketchybar 2>/dev/null
 yabai -m signal --remove space_destroyed_sketchybar 2>/dev/null
 yabai -m signal --add label=space_created_sketchybar event=space_created action="sketchybar --trigger space_list_change"

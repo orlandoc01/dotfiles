@@ -53,14 +53,16 @@ sketchybar --bar     height=$HEIGHT                                           \
 
 # Left
 source "$ITEM_DIR/spaces.sh"
-source "$ITEM_DIR/front_app.sh"
+source "$ITEM_DIR/yabai.sh"
 source "$ITEM_DIR/media_ctrl.sh"
 
-# Right
+# Right (sourced right-to-left: front_app is sourced last so it lands as the
+# leftmost item of the right group)
 source "$ITEM_DIR/calendar.sh"
 source "$ITEM_DIR/battery.sh"
 source "$ITEM_DIR/wifi.sh"
 source "$ITEM_DIR/cpu.sh"
+source "$ITEM_DIR/front_app.sh"
 
 # ITEMS=$(sketchybar --query bar | jq -r '.items | .[]')
 ITEMS="
@@ -100,6 +102,7 @@ separator
 system.yabai
 media_ctrl.app_icon
 media_ctrl.anchor
+front_app
 calendar
 battery
 wifi.control

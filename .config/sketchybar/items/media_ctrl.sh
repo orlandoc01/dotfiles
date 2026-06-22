@@ -36,7 +36,7 @@ media_ctrl_title=(
   padding_right=0
   width=0
   label.font="$FONT:Heavy:15.0"
-  label.max_chars=25
+  label.max_chars=18
   y_offset=55
 )
 
@@ -55,7 +55,7 @@ media_ctrl_album=(
   padding_right=0
   y_offset=15
   width=0
-  label.max_chars=30
+  label.max_chars=22
 )
 
 media_ctrl_back=(

@@ -6,6 +6,8 @@ export PATH="$HOMEBREW_PATH/sbin:$HOMEBREW_PATH/bin:/usr/bin:/bin:/usr/sbin:/sbi
 export PATH="$HOMEBREW_PATH/opt/coreutils/libexec/gnubin:$PATH"
 export PATH="$HOMEBREW_PATH/opt/gnu-sed/libexec/gnubin:$PATH"
 export PATH="$HOME/.jenv/bin:$PATH"
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
+
 export LANG=en_US.UTF-8
 export EDITOR='nvim'
 export PATH="$HOMEBREW_PATH/opt/llvm/bin:$PATH"
@@ -35,6 +37,7 @@ alias ranger='ranger --choosedir=$HOME/.rangerdir; LASTDIR=`cat $HOME/.rangerdir
 export GOSUMDB=off
 export GOPATH="${HOME}/.go"
 export PATH="$PATH:${GOPATH}/bin"
+export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="/Users/$USER/.local/bin:$PATH"
 
 export PYENV_ROOT="$HOME/.pyenv"
@@ -42,3 +45,9 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/orlando/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
+eval "$(mise activate zsh)"

@@ -9,9 +9,11 @@ brew "media-control" # event-based now-playing for the sketchybar media widget
 
 # Fonts
 cask "font-fira-code"
+cask "font-fira-code-nerd-font"
 cask "font-hack-nerd-font"
 cask "font-menlo-for-powerline"
 cask "font-meslo-for-powerline"
+cask "font-meslo-lg-nerd-font"
 cask "font-sketchybar-app-font"
 
 # Terminal
@@ -19,26 +21,31 @@ cask "alacritty"
 
 # Productivity
 cask "1password"
-cask "alfred"
-cask "the-unarchiver"
+cask "1password-cli"
+cask "flux-app"
 cask "macdown"
+cask "raycast"
 cask "sf-symbols"
+cask "the-unarchiver"
 
 # Browsers
 cask "brave-browser"
+cask "firefox"
 cask "google-chrome"
-cask "tor-browser-alpha"
+cask "microsoft-edge"
 
 # Communication
 cask "discord"
+cask "slack"
 
 # Development
-cask "docker"
-cask "postman"
 cask "charles"
-cask "sourcetree"
+cask "claude"
+cask "claude-code"
+cask "docker-desktop"
 cask "ngrok"
-cask "vagrant"
+cask "postman"
+cask "sourcetree"
 
 # Entertainment
 cask "spotify"
@@ -46,8 +53,8 @@ cask "vlc"
 cask "vuze"
 
 # Cloud & security
-cask "dropbox"
 cask "cryptomator"
+cask "dropbox"
 cask "expressvpn"
 
 # macOS extras

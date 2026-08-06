@@ -20,12 +20,17 @@ if ! command -v brew >/dev/null 2>&1; then
 fi
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-# -- 3. CLI packages via Brewfile ---------------------------------------------
+# -- 3. Trusted third-party Homebrew sources ----------------------------------
+echo "==> Trusting third-party Homebrew sources..."
+curl -fsSL "$RAW_BASE/scripts/trust_homebrew.sh" -o /tmp/trust_homebrew.sh
+bash /tmp/trust_homebrew.sh
+
+# -- 4. CLI packages via Brewfile ---------------------------------------------
 echo "==> Installing CLI packages..."
 curl -fsSL "$RAW_BASE/.config/Brewfile" -o /tmp/Brewfile
 brew bundle --file /tmp/Brewfile
 
-# -- 4. Clone dotfiles --------------------------------------------------------
+# -- 5. Clone dotfiles --------------------------------------------------------
 if [ ! -d "$DOTFILES_DIR" ]; then
   echo "==> Cloning dotfiles..."
   git clone -b macOS --bare "$DOTFILES_REPO" "$DOTFILES_DIR"
@@ -48,11 +53,11 @@ dotfiles submodule update --init --recursive
 echo "==> Configuring dotfiles repo..."
 dotfiles config --local status.showUntrackedFiles no
 
-# -- 5. Tmux plugins via TPM --------------------------------------------------
+# -- 6. Tmux plugins via TPM --------------------------------------------------
 echo "==> Installing tmux plugins..."
 "$HOME/.tmux/plugins/tpm/bin/install_plugins"
 
-# -- 6. Default shell ---------------------------------------------------------
+# -- 7. Default shell ---------------------------------------------------------
 echo "==> Setting zsh as default shell..."
 sudo chsh -s "$(brew --prefix)/bin/zsh" "$(whoami)"
 
